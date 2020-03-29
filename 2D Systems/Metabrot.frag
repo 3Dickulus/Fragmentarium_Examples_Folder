@@ -12,7 +12,7 @@ uniform double B; slider[0,0.7,1]
 uniform double ColDiv; slider[1,256,384]
 uniform double bailout; slider[0,6,160]
 uniform int  maxiters; slider[10,100,1000]
-uniform dvec2 c; slider[(-2,-2),(-0.2,0.0),(2,2)]
+uniform dvec2 C; slider[(-2,-2),(-0.2,0.0),(2,2)]
 uniform bool PreIter; checkbox[false]
 // z = csqr(z)+c; before entering the iteration loop
 uniform int  preiterations; slider[1,2,10]
@@ -25,7 +25,7 @@ dvec2 csqr( dvec2 a ) {
  if(Type==1) return dvec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y) + a;
  if(Type==2) return dvec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y) - a;
 }
-
+dvec2 c = C;
 dvec3 color(dvec2 p)
 {
    //z from current pixel
@@ -41,14 +41,14 @@ dvec3 color(dvec2 p)
      // http://www.fractalforums.com/images-showcase-(rate-my-fractal)/meta-mandelbrot-(mandeljulia)/
      z = csqr( csqr(z)+c ) + csqr(c)+z;
 
-     dist=max(dist,dot(z,z));
+     dist=max(dist,length(z));
      if (dist>bailout) break;
    }
 
    if (i < maxiters) {
       // The color scheme here is based on one from Inigo Quilez's Shader Toy:
       double co =  double(i) + 1. - (log(.5*log(dist))- log(.5*log(bailout))) / log(bailout);
-      co = 6.2831*sqrt(co/ColDiv);
+      co = 6.2831*sqrt(co/ColDiv)-bailout;
       return .5+.5*dvec3( cos(co+R), cos(co+G), cos(co+B) );
    }  else {
       double ld = log(log(6.2831*dist))-log(length(vec2(z)));
