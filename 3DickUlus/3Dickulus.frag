@@ -6,7 +6,7 @@
 
 #group Coloring
 // Roquen's domain mash up coordinate to invert to infinity
-uniform vec3 InvertC; slider[(-5,-5,-5),(0,0,0),(5,5,5)] Locked;
+uniform vec3 InvertC; slider[(-5,-5,-5),(0,0,0),(5,5,5)];
 // http://www.fractalforums.com/index.php?topic=16963.msg65053#msg65053
 // performs the active c = T(s)
 vec3 domainMap(vec3 c)
@@ -981,10 +981,10 @@ mbScale = 3
 mbRotVector = 0,1,0
 mbRotAngle = 9.22547e-13
 Up = 0,1,0
-/// mbRotAngle1:InOutCubic:7:0:360:50:2950:0.3:1:1.7:1:0
-/// Target2:CosineCurve:44:-50:50:1:3000:0.3:1:1.7:1:0
-/// Gamma1:Linear:0:0:2.0021:1:25:0.3:1:1.7:1:0
-/// Brightness1:Linear:0:1.0025:0:2975:3000:0.3:1:1.7:1:0
+mbRotAngle1:InOutCubic:7:0:360:50:2950:0.3:1:1.7:1:0
+Target2:CosineCurve:44:-50:50:1:3000:0.3:1:1.7:1:0
+Gamma1:Linear:0:0:2.0021:1:25:0.3:1:1.7:1:0
+Brightness1:Linear:0:1.0025:0:2975:3000:0.3:1:1.7:1:0
 #endpreset
 
 #preset Portal
