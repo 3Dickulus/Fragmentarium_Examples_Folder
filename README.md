@@ -1,3 +1,5 @@
+# Fragmentarium Example Folder
+
 ----------------------
 
     Licensed and distributed under the LPGL or GPL license where applicable.
