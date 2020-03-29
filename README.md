@@ -1,4 +1,4 @@
-# Fragmentarium Example Folder
+# Example files for https://github.com/3Dickulus/FragM
 
 ----------------------
 
