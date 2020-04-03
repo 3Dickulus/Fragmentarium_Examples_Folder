@@ -2,6 +2,10 @@
 
 ----------------------
 
+Note: frags marked "by username" have been submitted by said user, either based on an existing frag or original code, said user is responsable for the contents of coresponding frags. frags not marked that way are from the original (before this repo) distribution.
+
+----------------------
+
     Licensed and distributed under the LPGL or GPL license where applicable.
     Notice: some fragment (GLSL) shaders are copyright by other authors,
     and may carry other licenses. Please check the fragment file header before
