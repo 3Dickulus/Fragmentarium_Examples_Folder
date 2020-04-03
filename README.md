@@ -2,7 +2,7 @@
 
 ----------------------
 
-Note: frags marked "by username" have been submitted by said user, either based on an existing frag or original code, said user is responsable for the contents of coresponding frags. frags not marked that way are from the original (before this repo) distribution.
+Note: frags marked "by username" have been submitted by said user, either based on an existing frag or original code, said user is responsable for the contents of corresponding frags. frags not marked that way are from the original (before this repo) distribution.
 
 ----------------------
 
