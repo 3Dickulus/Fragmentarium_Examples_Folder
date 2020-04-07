@@ -1,3 +1,6 @@
 [submodule "3DickUlus"]
 	path = 3DickUlus
 	url = https://github.com/3Dickulus/My_Fragments
+[submodule "kosalos"]
+	path = kosalos
+	url = https://github.com/Kosalos/KosalosFrags.git
