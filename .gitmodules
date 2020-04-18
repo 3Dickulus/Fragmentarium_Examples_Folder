@@ -4,3 +4,6 @@
 [submodule "kosalos"]
 	path = kosalos
 	url = https://github.com/Kosalos/KosalosFrags.git
+[submodule "mclarekin"]
+	path = mclarekin
+	url = https://github.com/mclarekin/mclarekinfrags
