@@ -17,10 +17,11 @@ dir *= -1.;
 
 uniform float RefractiveIndex; slider[0,1,10]
 vec3 baseColor(vec3 point, vec3 N){
-    float ratio = 1.00 / RefractiveIndex;
+    float ratio = 1.0 / RefractiveIndex;
     vec3 I = (point - from);
-    vec3 R = refract(I, -N, ratio);
-    return textureCube(skybox, R.xzy).rgb;
+    vec3 _R = refract(I, -N, ratio);
+
+    return textureCube(skybox, _R.xzy).rgb;
 }
 
 #group Mandelbulb
@@ -133,18 +134,21 @@ float DE(vec3 pos) {
 #preset Default
 FOV = 0.62536
 Eye = 1.578295,-2.374888,-0.1754925
-Target = -2.237496,5.621949,-0.038792
-Up = 0.0250519,0.0290368,-0.9993381
+Target = -3.0639062,5.16513125,0.180074333
+Up = -0.010366167,0.040736891,-0.999189882
 EquiRectangular = false
 AutoFocus = false
 FocalPlane = 1
 Aperture = 0
 Gamma = 2.08335
-ToneMapping = 3
-Exposure = 0.6522
+ToneMapping = 1
+Exposure = 1
 Brightness = 1
 Contrast = 1
+AvgLumin = 0.5,0.5,0.5
 Saturation = 1
+LumCoeff = 0.2125,0.7154,0.0721
+Hue = 0
 GaussianWeight = 1
 AntiAliasScale = 2
 DepthToAlpha = false
@@ -154,7 +158,7 @@ Detail = -2.84956
 DetailAO = -1.35716
 FudgeFactor = 1
 MaxDistance = 1000
-MaxRaySteps = 164
+MaxRaySteps = 1062
 Dither = 0.51754
 NormalBackStep = 1
 AO = 0,0,0,0.85185
@@ -162,19 +166,19 @@ Specular = 0.336
 SpecularExp = 16.364
 SpecularMax = 10
 SpotLight = 1,1,1,1
-SpotLightDir = 0.7,-0.42
-CamLight = 1,1,1,1.53846
-CamLightMin = 0.12121
+SpotLightDir = -0.72673734,0.31448764
+CamLight = 1,1,1,1
+CamLightMin = 0.08127209
 Glow = 1,1,1,0.43836
 GlowMax = 52
 Fog = 0
 HardShadow = 0.35385
 ShadowSoft = 12.5806
 QualityShadows = false
-Reflection = 0
+Reflection = 0.75000001
 DebugSun = false
 BaseColor = 1,1,1
-OrbitStrength = 0
+OrbitStrength = 1
 X = 1,1,1,1
 Y = 0.345098,0.666667,0,0.02912
 Z = 1,0.666667,0,1
@@ -187,18 +191,18 @@ EnableFloor = false
 FloorNormal = 0,0,-1
 FloorHeight = -3.095238
 FloorColor = 1,1,1
+skybox = cubemap.png
+RefractiveIndex = 0.1
 Iterations = 12
 ColorIterations = 8
 Power = 8
 Bailout = 6.279
+DerivativeBias = 1
 AlternateVersion = true
 RotVector = 1,1,1
 RotAngle = 0
 Julia = false
 JuliaC = 0,0,0
-skybox = cubemap.png
-RefractiveIndex = 5.604396
-DerivativeBias = 1
 #endpreset
 
 #preset Octobulb
