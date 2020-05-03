@@ -83,9 +83,9 @@ void main() {
 // 	vec3 c = tex.xyz/tex.a;
     vec3 colorHSV = rgb2hsv(tex.rgb);  //based on ased on VB_overflows answer on https://stackoverflow.com/questions/32080747/gpuimage-add-hue-color-adjustments-per-rgb-channel-adjust-reds-to-be-more-pink
     colorHSV.x += Hue;
-    vec3 c = hsv2rgb(vec3(colorHSV));   
+    vec3 c = hsv2rgb(vec3(colorHSV));
     c=c/tex.a;
-    
+
 	if (ToneMapping==1) {
 		// Linear
 		c = c*Exposure;

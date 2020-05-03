@@ -419,13 +419,13 @@ vec3 trace(vec3 from, vec3 dir, inout vec3 hit, inout vec3 hitNormal) {
 vec3 color(vec3 from, vec3 dir) {
 	vec3 hit = vec3(0.0);
 	vec3 hitNormal = vec3(0.0);
-    depthFlag=true; // do depth on the first hit not on reflections
+	depthFlag=true; // do depth on the first hit not on reflections
 	vec3 first =  trace(from,dir,hit,hitNormal);
 
-	if (Reflection==0. || hitNormal == vec3(0.0)) {
-		return first;
-	} else {
+	if (Reflection!=0. && hitNormal != vec3(0.0)) {
 		vec3 d = reflect(dir, hitNormal);
-		return mix(first,trace(hit+d*minDist,d,hit, hitNormal),Reflection);
+		first = mix(first,trace(hit+d*minDist,d,hit, hitNormal),Reflection);
 	}
+
+	return clamp(vec3(0.0), first, vec3(1.0));
 }
