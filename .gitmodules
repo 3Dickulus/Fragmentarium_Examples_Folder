@@ -7,6 +7,3 @@
 [submodule "mclarekin"]
 	path = mclarekin
 	url = https://github.com/mclarekin/mclarekinfrags
-[submodule "TGlad"]
-	path = TGlad
-	url = https://github.com/TGlad/FragmentariumExamples
