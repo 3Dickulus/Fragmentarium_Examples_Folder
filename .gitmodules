@@ -10,3 +10,6 @@
 [submodule "TGlad"]
 	path = TGlad
 	url = https://github.com/TGlad/FragmentariumExamples.git
+[submodule "Claude"]
+	path = Claude
+	url = https://github.com/claudeha/fragm-examples.git
