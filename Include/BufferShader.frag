@@ -4,12 +4,23 @@
 
 #vertex
 
+#if __VERSION__ <= 400
 varying vec2 coord;
+#else
+layout(location = 0) in vec4 vertex_position;
+uniform mat4 projectionMatrix;
+out vec2 coord;
+#endif
 
 void main(void)
 {
+#if __VERSION__ <= 400
 	gl_Position =  gl_Vertex;
 	coord = (gl_ProjectionMatrix*gl_Vertex).xy;
+#else
+	gl_Position =  vertex_position;
+	coord = (projectionMatrix*vertex_position).xy;
+#endif
 }
 
 #endvertex
@@ -74,12 +85,22 @@ vec3 sigmoid3(vec3 t) {
 	return vec3(sigmoid(t.x),sigmoid(t.y),sigmoid(t.z));
 }
 
+#if __VERSION__ <= 400
 varying vec2 coord;
+#else
+in vec2 coord;
+out vec4 fragColor;
+#endif
+
 uniform sampler2D frontbuffer;
 
 void main() {
 	vec2 pos = (coord+1.0) * 0.5;
+#if __VERSION__ <= 400
 	vec4 tex = texture2D(frontbuffer, pos);
+#else
+	vec4 tex = texture(frontbuffer, pos);
+#endif
 // 	vec3 c = tex.xyz/tex.a;
     vec3 colorHSV = rgb2hsv(tex.rgb);  //based on ased on VB_overflows answer on https://stackoverflow.com/questions/32080747/gpuimage-add-hue-color-adjustments-per-rgb-channel-adjust-reds-to-be-more-pink
     colorHSV.x += Hue;
@@ -115,5 +136,9 @@ void main() {
 	}
 	c = pow(c, vec3(1.0/Gamma));
 
+#if __VERSION__ <= 400
 	gl_FragColor = vec4(c,1.0);
+#else
+	fragColor = vec4(c,1.0);
+#endif
 }
