@@ -86,11 +86,11 @@ uniform int maxIterAO; slider[0,20,100];
 uniform float FudgeAO; slider[0,1,1];
 #endif
 // AO influence on ambiant light
-uniform float AO_ambient; slider[0,0.7,2];
+uniform float AO_ambient; slider[0,0.7,10];
 // AO influence on camera light
-uniform float AO_camlight; slider[0,0,2];
+uniform float AO_camlight; slider[0,0,10];
 // AO influence on point light
-uniform float AO_pointlight; slider[0,0,2];
+uniform float AO_pointlight; slider[0,0,10];
 //????
 uniform float AoCorrect; slider[0.0,0.0,1.0];
 
@@ -100,11 +100,11 @@ uniform float Specular; slider[0,0.4,2.0];
 // The specular exponent
 uniform float SpecularExp; slider[0,16.0,500.0];
 // Light coming from the camera position (diffuse lightning)
-uniform vec4 CamLight; color[0,1,2,1.0,1.0,1.0];
+uniform vec4 CamLight; color[0,1,10,1.0,1.0,1.0];
 // Controls the minimum ambient light, regardless of directionality
 //uniform float CamLightMin; slider[0.0,0.0,1.0]
 // Light coming from the camera position (diffuse lightning)
-uniform vec4 AmbiantLight; color[0,1,2,1.0,1.0,1.0];
+uniform vec4 AmbiantLight; color[0,1,10,1.0,1.0,1.0];
 
 uniform vec3 Reflection; color[1,1,1]
 uniform int ReflectionsNumber; slider[0,0,5]
@@ -284,8 +284,8 @@ float DEF2(vec3 p) {
 		return DE(p)*FudgeFactor;
 	}
 }
-
-#define MIN_EPS 2./16777216.
+// 2./16777216.
+#define MIN_EPS 1.1920928955078125e-07
 
 #ifdef USE_EIFFIE_SHADOW
 // Uses the soft-shadow approach by Eiffie:
@@ -407,7 +407,7 @@ float ambientOcclusion(vec3 p, vec3 n) {
 	float w = 1.0;
 	float d = 1.0-(Dither*rand(p.xy));
 	float D=1.;
-	for (float i =1.0; i <15.; i++) {
+	for (float i =1.0; i <15.; i++) { // 15. ?
 		// D is the distance estimate difference.
 		// If we move 'n' units in the normal direction,
 		// we would expect the DE difference to be 'n' larger -
@@ -522,13 +522,13 @@ vec3 getColor() {
 	}
 
 	vec3 color = mix(BaseColor, 3.0*orbitColor,  OrbitStrength);
+clamp(color,vec3(0.0),vec3(1.0));
 	return color;
 }
 
 #ifdef  providesColor
 vec3 baseColor(vec3 point, vec3 normal);
 #endif
-float epsModified = 0.0;
 
 bool lighthit=false;
 vec3 trace(inout SRay Ray, inout vec3 hitNormal, inout float glow) {
@@ -595,7 +595,7 @@ vec3 trace(inout SRay Ray, inout vec3 hitNormal, inout float glow) {
 
 	float shadowStrength = 0.0;
 	if ( hitSomething ) {
-		if (dist==lightde) {lighthit=true; return SpotLight.xyz*SpotLight.w/(LightSize+0.01);}
+		if (dist==lightde && dist==glow) {lighthit=true; return SpotLight.xyz*SpotLight.w/(LightSize+0.01);}
 		// We hit something, or reached MaxRaySteps
 		hit = SRCurrentPt(Ray); //from + totalDist * direction;
 		float ao = 0.; // = stepFactor ;
@@ -640,7 +640,7 @@ vec3 trace(inout SRay Ray, inout vec3 hitNormal, inout float glow) {
 #endif
 		//hitColor +=Glow.xyz*stepFactor* Glow.w*(1.0-shadowStrength);
 		hitNormal = vec3(0.0);
-		Ray.Pos=MaxDistance;//1000.;//if nothing hit return a big value. This is necesary for the fog.
+		Ray.Pos=MaxDistance;//1000.;//if nothing hit return a big value. This is necessary for the fog.
 	}
 if(depthFlag) {
                 // do depth on the first hit not on reflections
@@ -668,12 +668,14 @@ if(depthFlag) {
 uniform bool EnCloudsDir; checkbox[false]
 uniform vec3 CloudDir; slider[(-1,-1,-1),(0,0,1),(1,1,1)]
 uniform float CloudScale; slider[0.1,1.0,10.0]
+uniform vec3 CloudOffset; slider[(-100,-100,-100),(0,0,0),(100,100,100)]
 uniform float CloudFlatness; slider[-1.0,0.0,1.0]
 uniform float CloudTops; slider[-20.0,1.0,20.0]
 uniform float CloudBase; slider[-20.0,-1.0,20.0]
-uniform float CloudDensity; slider[0.0,1.0,1.0]
-uniform float CloudRoughness; slider[0.0,1.0,2.0]
+uniform float CloudDensity; slider[0.0,1.0,2.0]
+uniform float CloudRoughness; slider[0.0,1.0,3.0]
 uniform float CloudContrast; slider[0.0,1.0,10.0]
+uniform float CloudBrightness; slider[1.0,1.0,3.0]
 uniform vec3 CloudColor; color[0.65,0.68,0.7]
 uniform vec3 CloudColor2; color[0.07,0.17,0.24]
 uniform vec3 SunLightColor; color[0.7,0.5,0.3]
@@ -725,12 +727,14 @@ vec4 integrateClouds( in vec4 sum, in float dif, in float den, in float t )
     return sum + col*(1.0-sum.a);
 }
 
-uniform float time;
+//uniform float time;
 
 vec4 clouds(vec3 p0, vec3 p1){
-        vec3 ro=p0 + ((WindDir*WindSpeed)*time),rd=normalize(p1-p0),cloudDir=normalize(HF_Dir);
-        if(EnCloudsDir){ cloudDir=normalize(CloudDir);
-	}
+
+p0 += CloudOffset; p1 += CloudOffset;
+
+    vec3 ro=p0 + ((WindDir*WindSpeed)*time),rd=normalize(p1-p0),cloudDir=normalize(HF_Dir);
+    if(EnCloudsDir){ cloudDir=normalize(CloudDir); }
 	vec4 sum = vec4(0.0);
 	float t=0.1*CloudScale*rand(vec3(gl_FragCoord.xyy+float(subframe)*30.0)),maxT=length(p1-p0);
 	bool goingUp=(dot(rd,cloudDir)>0.0);
@@ -771,7 +775,7 @@ vec3 ptLightGlow3(vec3 P0, vec3 P1){
 	float C=length2(P1-P0);
 	float Delta=sqrt(A*C-B*B);
 	//get sample point using importance sampling.
-	float x=(rand(viewCoord+vec2(1.6183+float(subframe+fogstrata)))+float(fogstrata))*1./float(HF_FogIter); fogstrata++;
+	float x=Dither*(rand(viewCoord+vec2((1.6183)+float(subframe+fogstrata)))+float(fogstrata))*1./float(HF_FogIter); fogstrata++;
 	float atanB=atan(B/Delta), atanBC=atan((B+C)/Delta);//B+C=dot((P1-P0)*(P1-LightPos))
 	float PDF_NF=(atanBC-atanB)/Delta;//Normalization factor due to division by the PDF.
 	float t=(tan(mix(atanB,atanBC,x))*Delta-B)/C;//when x is close to 0. there are black dots!
@@ -805,10 +809,14 @@ vec3 color(SRay Ray) {
 	vec3 col = vec3(0.0);
 	vec3 RWeight=vec3(1.);
 
+	vec3 prevPos= SRCurrentPt(Ray);
 	for(int i=0; i<=ReflectionsNumber;i++){
-		vec3 prevPos= SRCurrentPt(Ray);
 		vec3 col0 = trace(Ray, hitNormal, glow);
 		vec3 curPos= SRCurrentPt(Ray);
+#ifdef USE_IQ_CLOUDS
+		vec4 clds=clouds(prevPos, curPos);
+		col0=col0*(1.0-clds.w)+(clds.rgb*CloudBrightness);
+#endif
 
         vec3 FG = fogAmount3(prevPos, curPos);//get fog amount
 		col0=mix(HF_Color.rgb*HF_Color.w,col0,FG);//modify color
@@ -821,17 +829,15 @@ vec3 color(SRay Ray) {
 			col0+=colfogglow*1./float(HF_FogIter);//ptLightGlow1(prevPos, curPos);
 		}
 #endif
-#ifdef USE_IQ_CLOUDS
-		vec4 clds=clouds(prevPos, curPos);
-		col0=col0*(1.0-clds.w)+clds.rgb;
-#endif
+// 		if(lighthit) break;
 		col+=col0*RWeight;
 		RWeight *= Reflection * FG;//modify current opacity
-		if (hitNormal == vec3(0.0) || dot(RWeight,RWeight)<0.0001 || lighthit || Ray.Pos>=MaxDistance) {//nothing hit or light hit or reflected light is too small
+		if (floorHit || hitNormal == vec3(0.0) || dot(RWeight,RWeight)<0.00001 || lighthit || Ray.Pos>=MaxDistance) {//nothing hit or light hit or reflected light is too small
 			break;
 		}
 
         Ray=SRReflect(Ray, hitNormal, minDist);//reflect the ray
+        prevPos= curPos;
 	}
-	return max(vec3(0.),col);//Sometimes col<BigNegativeValue  ->black dots. Why? I don't know :-/. Solved by Eiffie & Syntopia See: http://www.fractalforums.com/fragmentarium/updating-of-de-raytracer/msg81003/#msg81003 . I keep it just in case .
+	return clamp( col, vec3(0.0), vec3(1.0) );//Sometimes col<BigNegativeValue  ->black dots. Why? I don't know :-/. Solved by Eiffie & Syntopia See: http://www.fractalforums.com/fragmentarium/updating-of-de-raytracer/msg81003/#msg81003 . I keep it just in case .
 }
