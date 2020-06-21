@@ -832,7 +832,7 @@ vec3 color(SRay Ray) {
 // 		if(lighthit) break;
 		col+=col0*RWeight;
 		RWeight *= Reflection * FG;//modify current opacity
-		if (floorHit || hitNormal == vec3(0.0) || dot(RWeight,RWeight)<0.00001 || lighthit || Ray.Pos>=MaxDistance) {//nothing hit or light hit or reflected light is too small
+		if (hitNormal == vec3(0.0) || dot(RWeight,RWeight)<0.00001 || lighthit || Ray.Pos>=MaxDistance) {//nothing hit or light hit or reflected light is too small
 			break;
 		}
 
