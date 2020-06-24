@@ -8,12 +8,24 @@
 
 #vertex
 
+#if __VERSION__ <= 400
+varying vec2 viewCoord;
+varying vec2 coord;
+varying vec2 aaScale;
+#else
+layout(location = 0) in vec4 vertex_position;
+uniform mat4 projectionMatrix;
+out vec2 viewCoord;
+out vec2 coord;
+out vec2 aaScale;
+#endif
+
 #group Camera
 
 // Use this to adjust clipping planes
 
-uniform vec2 Center; slider[(-10,-10),(0,0),(10,10)] NotLockable
-uniform float Zoom; slider[0,1,100000] NotLockable
+uniform vec2 Center; slider[(-500,-500),(0,0),(500,500)] NotLockable
+uniform float Zoom; slider[1e-3,1,100000] NotLockable
 
 uniform bool EnableTransform; checkbox[true]
 uniform float RotateAngle; slider[-360,0,360]
@@ -21,10 +33,6 @@ uniform float StretchAngle; slider[-360,0,360]
 uniform float StretchAmount; slider[-100,0,100]
 
 uniform vec2 pixelSize;
-
-varying vec2 coord;
-varying vec2 aaScale;
-varying vec2 viewCoord;
 
 void main(void)
 {
@@ -45,13 +53,33 @@ void main(void)
 		transform = m1 * m2 * m3 * m4;
 	}
 	float ar = pixelSize.y/pixelSize.x;
+#if __VERSION__ <= 400
 	gl_Position =  gl_Vertex;
 	viewCoord = (gl_Vertex).xy;
 	coord = (transform * ((gl_ProjectionMatrix*gl_Vertex).xy*vec2(ar,1.0))/Zoom+  Center);
 	aaScale = vec2(gl_ProjectionMatrix[0][0],gl_ProjectionMatrix[1][1])*pixelSize/Zoom;
+#else
+	gl_Position =  vertex_position;
+	viewCoord = (vertex_position).xy;
+	coord = (transform * ((projectionMatrix*vertex_position).xy*vec2(ar,1.0))/Zoom+  Center);
+	aaScale = vec2(projectionMatrix[0][0],projectionMatrix[1][1])*pixelSize/Zoom;
+#endif
 }
 
 #endvertex
+
+#if __VERSION__ <= 400
+varying vec2 viewCoord;
+varying vec2 coord;
+varying vec2 aaScale;
+#else
+layout(location = 0) in vec4 vertex_position;
+uniform mat4 projectionMatrix;
+in vec2 viewCoord;
+in vec2 coord;
+in vec2 aaScale;
+out vec4 fragColor;
+#endif
 
 #group Post
 uniform float Gamma; slider[0.0,2.2,5.0]
@@ -66,15 +94,12 @@ uniform float AARange; slider[0.0,2.,15.3]
 uniform float AAExp; slider[0.0,1,15.3]
 uniform bool GaussianAA; checkbox[true]
 
-varying vec2 coord;
-varying vec2 aaScale;
-varying vec2 viewCoord;
 vec2 aaCoord;
 uniform vec2 pixelSize;
 
 #ifdef providesFiltering
 	vec4 color(vec2 z) ;
-#else 
+#else
 	vec3 color(vec2 z) ;
 #endif
 
@@ -105,22 +130,34 @@ void main() {
 #ifdef providesInit
 	init();
 #endif
-    //  vec2 r = rand(viewCoord*(float(subframe)+1.0))-vec2(0.5);	
+    //  vec2 r = rand(viewCoord*(float(subframe)+1.0))-vec2(0.5);
 #ifdef providesFiltering
-	 vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
+	#if __VERSION__ <= 400
+	vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
+	#else
+	vec4 prev = texture(backbuffer,(viewCoord+vec2(1.0))/2.0);
+	#endif
 	vec4 new = color(coord.xy);
-#ifdef linearGamma
-     gl_FragColor = prev+ new;
+	#ifdef linearGamma
+		#if __VERSION__ <= 400
+	gl_FragColor = prev+ new;
+		#else
+	fragColor = prev+ new;
+		#endif
+	#else
+		#if __VERSION__ <= 400
+	gl_FragColor = prev+vec4( pow(new.xyz,vec3(Gamma)) , new.w);
+		#else
+	fragColor = prev+vec4( pow(new.xyz,vec3(Gamma)) , new.w);
+		#endif
+	#endif
 #else
-     gl_FragColor = prev+vec4( pow(new.xyz,vec3(Gamma)) , new.w);
-#endif
- #else
 	vec2 r = uniformDisc(vec2( 1.0*(float(subframe+1)) ));
 	float w =1.0;
       if (GaussianAA) {
 	 	// Gaussian
 		w= exp(-dot(r,r)/AAExp)-exp(-1.0/AAExp);
-				
+
 	      // Lancos
 	      // w = sin(r.x)*sin(r.x/AARange)*sin(r.y)*sin(r.y/AARange)/(r.x*r.x*r.y*r.y*AARange*AARange);
 	      // if (w!=w) w = 1.0;
@@ -128,16 +165,24 @@ void main() {
 
 	r*=AARange;
 	vec2 c = coord.xy+aaScale*r;
-#ifdef linearGamma
+	#ifdef linearGamma
 	vec3 color =  color(c);
-#else
-      vec3 color = pow( color(c),vec3(Gamma));
-#endif
+	#else
+	vec3 color = pow( color(c),vec3(Gamma));
+	#endif
 
-      vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
+	#if __VERSION__ <= 400
+	vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
+	#else
+	vec4 prev = texture(backbuffer,(viewCoord+vec2(1.0))/2.0);
+	#endif
 
 	if (! (color==color)) { color =vec3( 0.0); w = 0.0; } // NAN check
-      gl_FragColor = prev+vec4(color*w, w);
+	#if __VERSION__ <= 400
+	gl_FragColor = vec4(prev+ vec4(color*w, w));
+	#else
+	fragColor = vec4(prev+ vec4(color*w, w));
+	#endif
 #endif
 }
 
