@@ -652,7 +652,7 @@ double atan(double y, double x){
 
 #if __VERSION__ < 130
 
-float isnan(float val)
+bool isnan(float val)
 {
   return ! (val == val);
 }
