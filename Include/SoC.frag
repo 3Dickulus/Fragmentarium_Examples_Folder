@@ -167,7 +167,7 @@ void main() {
 	}//mix in background color
 	vec3 scol=BGColor+rd*0.1;
 	col.rgb+=scol*(1.0-clamp(col.w,0.0,1.0));
-	gl_FragColor = vec4(vec3(clamp(col.rgb,0.0,1.0)), 1.0);
+	gl_FragColor = vec4(vec3(max(col.rgb,vec3(0.0))), 1.0);
 
 	if(depthFlag) {
 		// do depth on the first hit not on reflections

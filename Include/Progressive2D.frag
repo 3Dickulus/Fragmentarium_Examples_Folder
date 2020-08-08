@@ -24,8 +24,8 @@ out vec2 aaScale;
 
 // Use this to adjust clipping planes
 
-uniform vec2 Center; slider[(-500,-500),(0,0),(500,500)] NotLockable
-uniform float Zoom; slider[1e-3,1,100000] NotLockable
+uniform vec2 Center; slider[(-5000,-5000),(0,0),(5000,5000)] NotLockable
+uniform float Zoom; slider[1e-5,1,10000] NotLockable
 
 uniform bool EnableTransform; checkbox[true]
 uniform float RotateAngle; slider[-360,0,360]

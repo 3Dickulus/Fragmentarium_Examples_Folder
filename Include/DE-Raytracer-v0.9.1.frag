@@ -204,10 +204,10 @@ float shadow(vec3 pos, vec3 sdir, float eps) {
 		return 1.0-s;
 }
 
-float rand(vec2 co){
+//float rand(vec2 co){
 	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
+//	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+//}
 
 vec3 lighting(vec3 n, vec3 color, vec3 pos, vec3 dir, float eps, out float shadowStrength) {
 	shadowStrength = 0.0;
@@ -411,7 +411,7 @@ vec3 trace(vec3 from, vec3 dir, inout vec3 hit, inout vec3 hitNormal) {
 		// clamp(totalDist/length(dir), 0.00001, 1000.0));
 			gl_FragDepth = (1.0 + (-1e-05 / clamp (totalDist/length(dir), 1e-05, 1000.0)));
 
-	return hitColor;
+	return max(hitColor, vec3(0.0));
 }
 
 #ifdef providesInit
@@ -446,7 +446,7 @@ void main() {
 		}
 	}
 
-	color = clamp(color/float(AntiAlias*AntiAlias), 0.0, 1.0);
+	color = max(color/float(AntiAlias*AntiAlias), vec3(0.0));
 	gl_FragColor = vec4(color, 1.0);
 
 }

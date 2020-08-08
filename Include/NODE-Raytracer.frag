@@ -574,7 +574,7 @@ void main() {
 	lightdir2 = normalize(vec3(1,0,0)*rotmat(vec3(0,0,1),LightDir2.x)*rotmat(vec3(0,1,0),LightDir2.y));
 	vec4 t = trace(from,dir);
 	vec4 t2=vec4(DEtrace(),MaxDistance*Focus);
-	gl_FragColor = length(t2.xyz)>0&&ShowLightPos?t2:t;
+	gl_FragColor = max(length(t2.xyz)>0&&ShowLightPos?t2:t, vec4(0.0));
 //         depthFlag=true; // do depth on the first hit not on reflections
 }
 

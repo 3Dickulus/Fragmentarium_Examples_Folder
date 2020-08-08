@@ -315,6 +315,6 @@ void main() {
 	vec3 hit;
         depthFlag=true; // do depth on the first hit not on reflections
 	vec3 color =  trace(from,dir,hit,hitNormal);
-	color = clamp(color, 0.0, 1.0);
+	color = max(color, vec3(0.0));
 	gl_FragColor = vec4(color, 1.0);
 }

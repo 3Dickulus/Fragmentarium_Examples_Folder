@@ -839,5 +839,5 @@ vec3 color(SRay Ray) {
         Ray=SRReflect(Ray, hitNormal, minDist);//reflect the ray
         prevPos= curPos;
 	}
-	return clamp( col, vec3(0.0), vec3(1.0) );//Sometimes col<BigNegativeValue  ->black dots. Why? I don't know :-/. Solved by Eiffie & Syntopia See: http://www.fractalforums.com/fragmentarium/updating-of-de-raytracer/msg81003/#msg81003 . I keep it just in case .
+	return max( col, vec3(0.0) );//Sometimes col<BigNegativeValue  ->black dots. Why? I don't know :-/. Solved by Eiffie & Syntopia See: http://www.fractalforums.com/fragmentarium/updating-of-de-raytracer/msg81003/#msg81003 . I keep it just in case .
 }

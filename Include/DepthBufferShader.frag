@@ -5,19 +5,20 @@
 
 #vertex
 
+
+varying vec2 coord;
+varying vec2 viewCoord;
+varying vec3 Dir;
+varying vec3 UpOrtho;
+varying vec3 Right;
+
+uniform vec2 pixelSize;
+uniform int subframe;
 uniform float FOV;
 uniform vec3 Eye;
 uniform vec3 Target;
 uniform vec3 Up;
 
-
-varying vec2 coord;
-uniform vec2 pixelSize;
-varying vec2 viewCoord;
-varying vec3 Dir;
-varying vec3 UpOrtho;
-varying vec3 Right;
-uniform int subframe;
 
 void main(void)
 {
@@ -33,6 +34,12 @@ void main(void)
 }
 
 #endvertex
+
+varying vec2 coord;
+varying vec2 viewCoord;
+varying vec3 Dir;
+varying vec3 UpOrtho;
+varying vec3 Right;
 
 uniform float Gamma;
 uniform float Exposure;
@@ -61,8 +68,6 @@ vec3 ContrastSaturationBrightness(vec3  color, float brt, float sat, float con)
 	return clamp(conColor,0.0,1.0);
 }
 
-varying vec2 coord;
-varying vec2 viewCoord;
 uniform sampler2D frontbuffer;
 uniform bool ShowDepth;
 uniform bool DebugNormals;
@@ -105,9 +110,6 @@ uniform float Far;
 uniform vec2 globalPixelSize;
 uniform vec2 pixelSize;
 
-varying vec3 Dir;
-varying vec3 UpOrtho;
-varying vec3 Right;
 uniform bool CentralDifferences; 
 
 void main() {

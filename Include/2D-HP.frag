@@ -4,6 +4,9 @@
 
 #vertex
 
+varying vec2 viewCoord;
+varying vec2 coord;
+
 #group Camera
 
 // Use this to adjust clipping planes
@@ -14,9 +17,6 @@ uniform float AntiAliasScale;slider[0.0,1,2] NotLockable
 
 
 uniform vec2 pixelSize;
-
-varying vec2 coord;
-varying vec2 viewCoord;
 
 void main(void)
 {
@@ -29,14 +29,12 @@ void main(void)
 #endvertex
 
 
-varying vec2 coord;
 varying vec2 viewCoord;
+varying vec2 coord;
+
 uniform vec2 pixelSize;
 
-
 vec3 color(vec2 z) ;
-
-
 
 #ifdef providesInit
 void init(); // forward declare

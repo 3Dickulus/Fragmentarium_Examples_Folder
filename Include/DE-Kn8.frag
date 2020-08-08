@@ -34,7 +34,7 @@
 // -Implement user defined matrials. High priority.
 // -Reduce banding artifacts ue to tracing accuracy. High priority.
 // -SoC? Global illumination? (maybe needs complete refactoring and/or removing InFocusAWidth which may complicate things)
-#include "3DKn-test-1.0.4.frag"
+#include "3DKn-1.0.4.frag"
 uniform float time;
 #group Post
 // Available when using exr image filename extention
@@ -60,15 +60,6 @@ uniform float Dither;slider[0,0.75,1];
 uniform float NormalBackStep; slider[0,1,10]
 float minDist = pow(10.0,Detail);
 const float ClarityPower = 1.0;
-
-float rand(vec2 pos)
-{
-#ifdef WANG_HASH
-  return fract(sin(dot(pos.xy ,vec2(wang_hash_fp(pos.x),wang_hash_fp(pos.y)))) * 43758.5453);
-#else
-  return fract(sin(dot(pos.xy ,vec2(12.9898,78.233))) * 43758.5453);
-#endif
-}
 
 #group Light
 uniform float AoWeight;slider[0,0,10];
@@ -576,22 +567,6 @@ vec3 trace(inout SRay Ray, inout vec3 hitNormal, inout float glow) {
 			gl_FragDepth = (1.0 + (-1e-05 / clamp (Ray.Pos, 1e-05, 1000.0)));
 	}
 	return hitColor;
-}
-
-
-/*
-float rand(vec3 co){// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	//return fract(sin(dot(co*0.123,vec3(12.9898,78.233,112.166))) * 43758.5453);
-	return fract(sin(dot(co,fract_)) * 43758.5453);
-}
-*/
-float rand(vec3 pos)
-{
- #ifdef WANG_HASH
-	return fract(sin(dot(pos,vec3(wang_hash_fp(pos.x),wang_hash_fp(pos.y),wang_hash_fp(pos.z)))) * 43758.5453);
- #else
-        return fract(sin(dot(pos,vec3(12.9898,78.233,112.166))) * 43758.5453);
- #endif
 }
 
 #ifdef USE_IQ_CLOUDS

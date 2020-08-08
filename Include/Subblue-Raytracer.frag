@@ -317,6 +317,6 @@ void main() {
 		}
 	}
 
-	color = clamp(color/float(AntiAlias*AntiAlias), 0.0, 1.0);
+	color = max(color/float(AntiAlias*AntiAlias), vec3(0.0));
 	gl_FragColor = vec4(color, 1.0);
 }

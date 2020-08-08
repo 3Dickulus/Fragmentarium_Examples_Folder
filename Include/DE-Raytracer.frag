@@ -30,13 +30,13 @@ float aoEps = pow(10.0,DetailAO);
 uniform float MaxDistance;  slider[0,1000,5000];
 
 // Maximum number of  raymarching steps.
-uniform int MaxRaySteps;  slider[0,56,5000]
+uniform int MaxRaySteps;  slider[0,56,10000]
 
 // Use this to boost Ambient Occlusion and Glow
 //uniform float  MaxRayStepsDiv;  slider[0,1.8,10]
 
 // Can be used to remove banding
-uniform float Dither;slider[0,0.5,1];
+uniform float Dither;slider[0,0.5,5];
 
 // Used to prevent normals from being evaluated inside objects.
 uniform float NormalBackStep; slider[0,1,10] Locked
@@ -130,7 +130,7 @@ vec3  backgroundColor(vec3 dir);
 
 uniform bool EnableFloor; checkbox[false] Locked
 uniform vec3 FloorNormal; slider[(-1,-1,-1),(0,0,1),(1,1,1)]
-uniform float FloorHeight; slider[-5,0,5]
+uniform float FloorHeight; slider[-50,0,50]
 uniform vec3 FloorColor; color[1,1,1]
 bool floorHit = false;
 float floorDist = 0.0;
@@ -419,13 +419,12 @@ vec3 trace(vec3 from, vec3 dir, inout vec3 hit, inout vec3 hitNormal) {
 vec3 color(vec3 from, vec3 dir) {
 	vec3 hit = vec3(0.0);
 	vec3 hitNormal = vec3(0.0);
-	depthFlag=true; // do depth on the first hit not on reflections
+    depthFlag=true; // do depth on the first hit not on reflections
 	vec3 first =  trace(from,dir,hit,hitNormal);
 
 	if (Reflection!=0. && hitNormal != vec3(0.0)) {
 		vec3 d = reflect(dir, hitNormal);
 		first = mix(first,trace(hit+d*minDist,d,hit, hitNormal),Reflection);
 	}
-
-	return clamp(vec3(0.0), first, vec3(1.0));
+		return max( first, vec3(0.0));
 }

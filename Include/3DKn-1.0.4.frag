@@ -19,6 +19,19 @@ vec3 color(vec3 cameraPos, vec3 direction);
 
 #vertex
 
+varying vec2 viewCoord;
+varying vec2 coord;
+varying vec2 PixelScale;
+varying vec2 viewCoord2;
+varying vec3 from;
+varying vec3 dir;
+varying vec3 Dir;
+varying vec3 UpOrtho;
+varying vec3 Right;
+varying float FOVP; // perspective FOV (0-2)
+varying float FOVT; // Horizontal FOV in degrees
+varying float FOVFL; // FOV using filmgate and focal length
+
 #group Camera
 // Field-of-view (perspective)
 uniform float FOV; slider[0,1.35,2.0] NotLockable
@@ -32,26 +45,14 @@ uniform bool UseFocalLength; checkbox[false]
 uniform float FocalLength; slider[1,14,800]
 uniform float FilmGate; slider[1,36,120]
 
-varying float FOVP; // perspective FOV (0-2)
-varying float FOVT; // Horizontal FOV in degrees
-varying float FOVFL; // FOV using filmgate and focal length
 uniform vec3 Eye; slider[(-50,-50,-50),(0,-3,0),(50,50,50)] NotLockable
 uniform vec3 Ey_; slider[(-50,-50,-50),(0,0,0),(50,50,50)] NotLockable
 uniform vec3 Target; slider[(-50,-50,-50),(0,0,0),(50,50,50)] NotLockable
 uniform vec3 Targe_; slider[(-50,-50,-50),(0,0,0),(50,50,50)] NotLockable
 uniform vec3 Up; slider[(0,0,0),(0,0,1),(0,0,0)] NotLockable
 
-varying vec3 from;
 uniform vec2 pixelSize;
-varying vec2 coord;
-varying vec2 viewCoord;
-varying vec2 viewCoord2;
-varying vec3 dir;
-varying vec3 Dir;
-varying vec3 UpOrtho;
-varying vec3 Right;
 uniform int subframe;
-varying vec2 PixelScale;
 
 #ifdef providesInit
 void init(); // forward declare
@@ -77,7 +78,7 @@ void main(void){
 	// Prepare Camera
 	float FOVP = FOV; // perspective FOV (0-2)
 	//if (UseTrueFOV) FOVP = tan(radians(TrueFOV/2));
-	if (UseFocalLength) FOVP = FilmGate / (2 * FocalLength);
+	if (UseFocalLength) FOVP = FilmGate / (2. * FocalLength);
 
 
 	gl_Position =  gl_Vertex;
@@ -115,6 +116,20 @@ void main(void){
 }
 #endvertex
 
+// Camera position and target.
+varying vec2 viewCoord;
+varying vec2 coord;
+varying vec2 PixelScale;
+varying vec2 viewCoord2;
+varying vec3 from;
+varying vec3 dir;
+varying vec3 Dir;
+varying vec3 UpOrtho;
+varying vec3 Right;
+varying vec3 dirDx;
+varying vec3 dirDy;
+varying float zoom;
+
 #group Camera
 uniform bool EquiRectangular; checkbox[false]
 // Sets focal plane to Target location
@@ -137,26 +152,13 @@ uniform bool ApStarShaped; checkbox[false] Locked
 
 #define PI  3.14159265358979323846264
 
-// Camera position and target.
-varying vec3 from;
-varying vec3 dir;
-varying vec3 dirDx;
-varying vec3 dirDy;
-varying vec2 coord;
-varying float zoom;
-
+uniform sampler2D backbuffer;
 #if 0
 uniform int backbufferCounter;//  subframe; //
 #define subframe backbufferCounter
 #else
 uniform int subframe;
 #endif
-uniform sampler2D backbuffer;
-varying vec2 viewCoord;
-varying vec2 viewCoord2;
-varying vec3 Dir;
-varying vec3 UpOrtho;
-varying vec3 Right;
 
 
 // vec2 rand2(vec2 co){
@@ -216,7 +218,6 @@ uniform float BloomIntensity; slider[0,0.25,2]
 uniform float BloomPow; slider[0,2,10]
 uniform int   BloomTaps; slider[1,4,20]
 
-varying vec2 PixelScale;
 uniform float FOV;
 
 // Given a camera pointing in 'dir' with an orthogonal 'up' and 'right' vector

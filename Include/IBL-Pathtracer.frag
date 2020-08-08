@@ -91,10 +91,10 @@ vec3 fromPhiTheta(vec2 p) {
 		cos(p.y));
 }
 
-float rand(vec2 co){
+//float rand(vec2 co){
 	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
+//	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+//}
 
 #ifdef  providesColor
 vec3 baseColor(vec3 point, vec3 normal);
@@ -152,13 +152,7 @@ vec3 ortho(vec3 d) {
 	}
 }
 
-vec2 cx=
-vec2(
-	floor(mod(float(subframe)*1.0,10.)),
-	floor(mod(float(subframe)*0.1,10.))
-	)/10.0;
-
-
+vec2 cx=vec2(floor(mod(float(subframe)*1.0,10.)),floor(mod(float(subframe)*0.1,10.)))/10.0;
 
 vec3 getSampleBiased(vec3  dir, float power) {
 	dir = normalize(dir);
@@ -241,9 +235,9 @@ vec3 getColor() {
 	return color;
 }
 
-float rand() {
-	return rand(viewCoord*(float(subframe)+1.0));
-}
+//float rand() {
+//	return rand(viewCoord*(float(subframe)+1.0));
+//}
 
 uniform bool BiasedSampling; checkbox[true]
 
@@ -261,7 +255,7 @@ vec3 color(vec3 from, vec3 dir)
 		if (trace(from,dir,hit,hitNormal)) {
 			// We hit something
 
-			if (rand() > reflectivity ) {
+			if (rand(viewCoord*(float(subframe)+1.0)) > reflectivity ) {
 				#ifdef providesColor
 				color *= baseColor(hit, hitNormal);
 				#else
@@ -297,7 +291,7 @@ vec3 color(vec3 from, vec3 dir)
 			if (debugLast && i!=RayDepth-1) {
 				return vec3(0.0);
 			}
-			return color * getBackground( dir );
+			return max(color * getBackground( dir ), vec3(0.0));
 		}
 	}
 	return vec3(0.0);

@@ -7,15 +7,15 @@
 
 #vertex
 
+out vec2 viewCoord;
 out vec2 coord;
 out vec2 aaScale;
-out vec2 viewCoord;
 
 #group Camera
 
 // Use this to adjust clipping planes
 
-uniform double Zoom; slider[0.5,1,1e16] NotLockable
+uniform double Zoom; slider[0.5,1,1e14] NotLockable
 uniform dvec2 Center; slider[(-100,-100),(0,0),(100,100)] NotLockable
 
 uniform bool EnableTransform; checkbox[true]
@@ -53,6 +53,11 @@ void main(void)
 
 #endvertex
 
+in vec2 viewCoord;
+in vec2 coord;
+in vec2 aaScale;
+out vec4 FragColor;
+
 uniform dvec2 Center;
 
 #group Post
@@ -68,10 +73,6 @@ uniform double AARange; slider[0.0,2.,15.3]
 uniform double AAExp; slider[0.0,1,15.3]
 uniform bool GaussianAA; checkbox[true]
 
-in vec2 coord;
-in vec2 aaScale;
-in vec2 viewCoord;
-out vec4 FragColor;
 
 dvec2 aaCoord;
 uniform vec2 pixelSize;

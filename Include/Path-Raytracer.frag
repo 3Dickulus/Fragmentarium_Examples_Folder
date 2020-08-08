@@ -288,7 +288,7 @@ vec3 color(vec3 from, vec3 dir)
 			break;
 		}
 	}
-	return color;
+	return max(color, vec3(0.0));
 }
 
 

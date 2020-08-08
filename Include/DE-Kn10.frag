@@ -562,17 +562,6 @@ float DEF2(vec3 p) {
 }
 #define MIN_EPS 2./16777216.
 
-float rand(vec2 pos)
-{
-#ifdef WANG_HASH
-  // modified for seeding with wang hash function
-  return fract(sin(dot(wang_hash_fp(pos)*0.123,vec2(12.9898,78.233))) * 3758.5453);
-#else
-        // implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-  return fract(sin(dot(pos.xy*0.123 ,vec2(12.9898,78.233))) * 43758.5453);
-#endif
-}
-
 #ifdef USE_EIFFIE_SHADOW
 // Uses the soft-shadow approach by Eiffie:
 float linstep(float a, float b, float t){return clamp((t-a)/(b-a),0.,1.);}

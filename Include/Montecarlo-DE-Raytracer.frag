@@ -436,5 +436,5 @@ vec3 color(vec3 from, vec3 dir) {
 //	vec3 hit = vec3(0.0);
 //	vec3 hitNormal = vec3(0.0);
 //	return  trace(from,dir,hit,hitNormal);
-	return  monty(from,dir);
+	return  max(monty(from,dir), vec3(0.0));
 }

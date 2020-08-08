@@ -372,7 +372,7 @@ vec3 trace(vec3 from, vec3 dir, inout vec3 hit, inout vec3 hitNormal) {
 			gl_FragDepth = (1.0 + (-1e-05 / clamp (totalDist, 1e-05, 1000.0)));
 	}
 
-	return hitColor;
+	return max(hitColor, vec3(0.0));
 }
 
 vec3 color(vec3 from, vec3 dir) {

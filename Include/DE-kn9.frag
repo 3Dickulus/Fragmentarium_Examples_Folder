@@ -34,6 +34,8 @@
 // -Reduce banding artifacts ue to tracing accuracy. High priority.
 // -SoC? Global illumination? (maybe needs complete refactoring and/or removing InFocusAWidth which may complicate things)
 
+uniform float time;
+
 #include "3DKn-1.0.4.frag"
 #include "Kaliset3Dtex.frag"
 
@@ -280,13 +282,6 @@ float DEF2(vec3 p) {
 }
 
 #define MIN_EPS 2./16777216.
-
-
-float rand(vec2 co){
-	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
 
 // Uses the soft-shadow approach by Eiffie:
 float linstep(float a, float b, float t){return clamp((t-a)/(b-a),0.,1.);}
@@ -570,10 +565,6 @@ uniform float CloudContrast; slider[0.0,1.0,10.0]
 uniform vec3 CloudColor; color[0.65,0.68,0.7]
 //and the color of light hitting them (posLight doesn't have a color??)
 uniform vec3 SunLightColor; color[0.7,0.5,0.3]
-
-float rand(vec3 co){// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co*0.123,vec3(12.9898,78.233,112.166))) * 43758.5453);
-}
 
 float cnoyz(vec3 co){
 	vec3 d=smoothstep(0.0,1.0,fract(co));
