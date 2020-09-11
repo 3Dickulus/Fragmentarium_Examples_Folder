@@ -11,12 +11,10 @@ bool depthFlag = true; // do depth on the first hit not on reflections
 // Distance to object at which raymarching stops.
 uniform float Detail; slider[-7,-2.3,0];
 // Lower this if the system is missing details
-uniform float FudgeFactor;
-slider[0,1,1];
+uniform float FudgeFactor; slider[0,1,1];
 float minDist = pow(10.0,Detail);
 // Maximum number of raymarching steps.
-uniform int MaxRaySteps;
-slider[0,56,2000]
+uniform int MaxRaySteps; slider[0,56,2000]
 vec4 orbitTrap = vec4(10000.0);
 #group Light
 #group Coloring
@@ -36,33 +34,21 @@ vec3 normal(vec3 pos, float normalDistance) {
 #endif
 #group Coloring
 // This is the pure color of object (in white light)
-uniform vec3 BaseColor;
-color[1.0,1.0,1.0];
+uniform vec3 BaseColor; color[1.0,1.0,1.0];
 // Determines the mix between pure light coloring and pure orbit trap coloring
-uniform float OrbitStrength;
-slider[0,0,1]
+uniform float OrbitStrength; slider[0,0,1]
 // Closest distance to YZ-plane during orbit
-uniform vec4 X;
-color[-1,0.7,1,0.5,0.6,0.6];
+uniform vec4 X; color[-1,0.7,1,0.5,0.6,0.6];
 // Closest distance to XZ-plane during orbit
-uniform vec4 Y;
-color[-1,0.4,1,1.0,0.6,0.0];
+uniform vec4 Y; color[-1,0.4,1,1.0,0.6,0.0];
 // Closest distance to XY-plane during orbit
-uniform vec4 Z;
-color[-1,0.5,1,0.8,0.78,1.0];
+uniform vec4 Z; color[-1,0.5,1,0.8,0.78,1.0];
 // Closest distance to origin during orbit
-uniform vec4 R;
-color[-1,0.12,1,0.4,0.7,1.0];
-uniform bool CycleColors;
-checkbox[false]
-uniform float Cycles;
-slider[0.1,1.1,32.3]
+uniform vec4 R; color[-1,0.12,1,0.4,0.7,1.0];
+uniform bool CycleColors; checkbox[false]
+uniform float Cycles; slider[0.1,1.1,32.3]
 #group Raytracer
 #define PI 3.14159265358979323846264
-float rand(vec2 co) {
-// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
 #ifdef providesColor
 vec3 baseColor(vec3 point, vec3 normal);
 #endif
@@ -99,16 +85,11 @@ bool trace(vec3 from, vec3 dir, inout vec3 hit, inout vec3 hitNormal) {
     }
     return false;
 }
-uniform float Reflectivity;
-slider[0,0.2,1.0]
-uniform bool DebugLast;
-checkbox[false]
-uniform bool Stratify;
-checkbox[false]
-uniform int RayDepth;
-slider[0,2,5] Locked
-uniform float Albedo;
-slider[0,1,1]
+uniform float Reflectivity; slider[0,0.2,1.0]
+uniform bool DebugLast; checkbox[false]
+uniform bool Stratify; checkbox[false]
+uniform int RayDepth; slider[0,2,5] Locked
+uniform float Albedo; slider[0,1,1]
 vec3 ortho(vec3 v) {
 // See : http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts
     return abs(v.x) > abs(v.z) ? vec3(-v.y, v.x, 0.0) : vec3(0.0, -v.z, v.y);
@@ -185,10 +166,8 @@ vec3 getColor() {
 float rand() {
     return rand(viewCoord*(float(subframe)+1.0));
 }
-uniform bool BiasedSampling;
-checkbox[true]
-uniform bool DirectLight;
-checkbox[true]
+uniform bool BiasedSampling; checkbox[true]
+uniform bool DirectLight; checkbox[true]
 vec3 color(vec3 from, vec3 dir)
 {
     vec3 hit = vec3(0.0);

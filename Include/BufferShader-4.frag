@@ -1,5 +1,3 @@
-#version 400 compatibility
-
 #donotrun
 // This is a simple shader for rendering images
 // from an accumulated buffer.

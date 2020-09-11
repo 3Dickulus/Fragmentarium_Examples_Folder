@@ -192,10 +192,6 @@ mat3 rotmat(vec3 v, float angle)
 		);
 }
 
-float rand(vec2 co){
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
 mat3 align(vec3 fw, vec3 up2) {
 	vec3 rt=normalize(cross(fw,up2));
 	up2=cross(rt,fw);
@@ -562,6 +558,15 @@ vec3 DEtrace() {
 	}
 }
 
+bool formula(vec3 p) {
+	bool i=false;
+	#ifdef providesInside
+	i=inside(p);
+	#else
+	i=DE(p)<pow(DEAdjust,2);
+	#endif
+	return i!=side;
+}
 
 #ifdef providesInit
 void init();
@@ -576,16 +581,6 @@ void main() {
 	vec4 t2=vec4(DEtrace(),MaxDistance*Focus);
 	gl_FragColor = max(length(t2.xyz)>0&&ShowLightPos?t2:t, vec4(0.0));
 //         depthFlag=true; // do depth on the first hit not on reflections
-}
-
-bool formula(vec3 p) {
-	bool i=false;
-	#ifdef providesInside
-	i=inside(p);
-	#else
-	i=DE(p)<pow(DEAdjust,2);
-	#endif
-	return i!=side;
 }
 
 

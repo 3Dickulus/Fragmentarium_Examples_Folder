@@ -19,14 +19,15 @@ void init() {}
 
 vec2 formula(vec2 p, vec2 c);
 
-vec2 c2 = vec2(JuliaX,JuliaY);
+vec2 c2;
 
 vec2 mapCenter = vec2(0.5,0.5);
 float mapRadius =0.4;
 uniform bool ShowMap; checkbox[true]
 uniform float MapZoom; slider[0.01,2.1,6]
 uniform float EscapeSize; slider[0,5,11]
-float escape = pow(10.0,EscapeSize);
+float escape;
+
 vec3 getMapColor2D(vec2 c) {
 	vec2 p =  (aaCoord-mapCenter)/(mapRadius);
 	p*=MapZoom; p.x/=pixelSize.x/pixelSize.y;
@@ -52,6 +53,10 @@ uniform int ColoringType; slider[0,0,2]
 uniform float ColorFactor; slider[0,0.5,1]
 
 vec3 color(vec2 c) {
+
+    escape = pow(10.0,EscapeSize);
+    c2 = vec2(JuliaX,JuliaY);
+
 	if (ShowMap && Julia) {
 		vec2 w = (aaCoord-mapCenter);
 		w.y/=(pixelSize.y/pixelSize.x);

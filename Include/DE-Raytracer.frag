@@ -25,8 +25,8 @@ const float ClarityPower = 1.0;
 // Lower this if the system is missing details
 uniform float FudgeFactor;slider[0,1,1];
 
-float minDist = pow(10.0,Detail);
-float aoEps = pow(10.0,DetailAO);
+float minDist;
+float aoEps;
 uniform float MaxDistance;  slider[0,1000,5000];
 
 // Maximum number of  raymarching steps.
@@ -134,7 +134,7 @@ uniform float FloorHeight; slider[-50,0,50]
 uniform vec3 FloorColor; color[1,1,1]
 bool floorHit = false;
 float floorDist = 0.0;
-vec3 floorNormal = normalize(FloorNormal);
+vec3 floorNormal;
 float fSteps = 0.0;
 float DEF(vec3 p) {
 	float d = DE(p);
@@ -417,6 +417,11 @@ vec3 trace(vec3 from, vec3 dir, inout vec3 hit, inout vec3 hitNormal) {
 }
 
 vec3 color(vec3 from, vec3 dir) {
+	// placed here for GLES
+	floorNormal = normalize(FloorNormal);
+	minDist = pow(10.0,Detail);
+	aoEps = pow(10.0,DetailAO);
+
 	vec3 hit = vec3(0.0);
 	vec3 hitNormal = vec3(0.0);
     depthFlag=true; // do depth on the first hit not on reflections

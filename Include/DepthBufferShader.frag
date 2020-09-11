@@ -97,11 +97,6 @@ uniform vec3 Up;
 #TexParameter frontbuffer GL_TEXTURE_WRAP_S GL_CLAMP
 #TexParameter frontbuffer GL_TEXTURE_WRAP_T GL_CLAMP
 
-float rand(vec2 co){
-	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
 uniform int subframe;
 uniform float Glow;
 uniform float AOStrength;

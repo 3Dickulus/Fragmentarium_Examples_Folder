@@ -161,11 +161,6 @@ float shadow(vec3 pos, vec3 sdir, float eps) {
 	return 1.0-s;
 }
 
-float rand(vec2 co){
-	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
 vec3 lighting(vec3 n, vec3 color, vec3 pos, vec3 dir, float eps, out float shadowStrength) {
 	shadowStrength = 0.0;
 	vec3 spotDir = vec3(sin(SpotLightDir.x*3.1415)*cos(SpotLightDir.y*3.1415*0.5), sin(SpotLightDir.y*3.1415*0.5)*sin(SpotLightDir.x*3.1415), cos(SpotLightDir.x*3.1415));

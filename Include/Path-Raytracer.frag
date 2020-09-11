@@ -65,12 +65,6 @@ vec3 fromPhiTheta(vec2 p) {
 }
 
 
-float rand(vec2 co){
-	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
-
 #ifdef  providesColor
 vec3 baseColor(vec3 point, vec3 normal);
 #endif

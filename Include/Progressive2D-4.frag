@@ -7,15 +7,15 @@
 
 #vertex
 
-out vec2 viewCoord;
-out vec2 coord;
-out vec2 aaScale;
+varying vec2 viewCoord;
+varying vec2 coord;
+varying vec2 aaScale;
 
 #group Camera
 
 // Use this to adjust clipping planes
 
-uniform double Zoom; slider[0.5,1,1e14] NotLockable
+uniform double Zoom; slider[0.5,1,1e16] NotLockable
 uniform dvec2 Center; slider[(-100,-100),(0,0),(100,100)] NotLockable
 
 uniform bool EnableTransform; checkbox[true]
@@ -53,11 +53,6 @@ void main(void)
 
 #endvertex
 
-in vec2 viewCoord;
-in vec2 coord;
-in vec2 aaScale;
-out vec4 FragColor;
-
 uniform dvec2 Center;
 
 #group Post
@@ -73,6 +68,9 @@ uniform double AARange; slider[0.0,2.,15.3]
 uniform double AAExp; slider[0.0,1,15.3]
 uniform bool GaussianAA; checkbox[true]
 
+varying vec2 viewCoord;
+varying vec2 coord;
+varying vec2 aaScale;
 
 dvec2 aaCoord;
 uniform vec2 pixelSize;
@@ -142,7 +140,7 @@ void main() {
       vec4 prev = texture(backbuffer,vec2(viewCoord+vec2(1.0))/2.0);
 
 	if (! (color==color)) { color =dvec3( 0.0); w = 0.0; } // NAN check
-      FragColor = vec4(prev+vec4(color*w, w));
+      gl_FragColor = vec4(prev+vec4(color*w, w));
 
 #endif
 }

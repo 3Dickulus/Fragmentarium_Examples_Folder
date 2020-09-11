@@ -58,7 +58,7 @@ const float ClarityPower = 1.0;
 // Lower this if the system is missing details
 uniform float FudgeFactor;slider[0,1,1];
 
-float minDist = pow(10.0,Detail);
+float minDist;
 //float MaxDistance = 100.0;
 
 // Maximum number of  raymarching steps.
@@ -76,7 +76,7 @@ uniform float NormalBackStep; slider[0,1,10]
 #group AO
 // The step size when sampling AO (set to 0 for old AO)
 uniform float DetailAO;slider[-7,-0.5,0];
-float aoEps = pow(10.0,DetailAO);
+float aoEps;
 #ifdef MULTI_SAMPLE_AO
 //How much the sample directions deviate from normal to the surface
 uniform float coneApertureAO;slider[0.,0.5,1.];
@@ -201,7 +201,7 @@ uniform vec3 FloorColor; color[1,1,1]
 
 bool floorHit = false;
 float floorDist = 0.0;
-vec3 floorNormal = normalize(FloorNormal);
+vec3 floorNormal;
 float fSteps = 0.0;
 
 #group Height_Fog
@@ -316,7 +316,6 @@ else {
 		s*=linstep(0.,2.*r,1.*d);//smoothstep(-r,r,d);//
 		t+=abs(0.75*d+ShadowSoft*r);
 }
-
 	}
 	s=max(0.,s-0.001)/0.999;
 	return clamp(1.-s,0.0,1.0);
@@ -346,7 +345,7 @@ float shadow(vec3 ro, vec3 lightPos, float eps) {
 
 #ifdef MULTI_SAMPLE_AO
 //Modified from Syntopia's. http://blog.hvidtfeldts.net/index.php/2015/01/path-tracing-3d-fractals/
-vec2 seed = viewCoord*(float(subframe)+1.0);
+vec2 seed;
 
 vec2 rand2n() {//there are too much rand versions out there. I'll need to clean things up.
     seed+=vec2(-1,1);
@@ -522,7 +521,6 @@ vec3 getColor() {
 	}
 
 	vec3 color = mix(BaseColor, 3.0*orbitColor,  OrbitStrength);
-clamp(color,vec3(0.0),vec3(1.0));
 	return color;
 }
 
@@ -733,7 +731,7 @@ vec4 clouds(vec3 p0, vec3 p1){
 
 p0 += CloudOffset; p1 += CloudOffset;
 
-    vec3 ro=p0 + ((WindDir*WindSpeed)*time),rd=normalize(p1-p0),cloudDir=normalize(HF_Dir);
+        vec3 ro=p0 + ((WindDir*WindSpeed)*time),rd=normalize(p1-p0),cloudDir=normalize(HF_Dir);
     if(EnCloudsDir){ cloudDir=normalize(CloudDir); }
 	vec4 sum = vec4(0.0);
 	float t=0.1*CloudScale*rand(vec3(gl_FragCoord.xyy+float(subframe)*30.0)),maxT=length(p1-p0);
@@ -804,12 +802,21 @@ vec3 ptLightGlow3(vec3 P0, vec3 P1){
 #endif
 
 vec3 color(SRay Ray) {
+
+	aoEps = pow(10.0,DetailAO);
+	floorNormal = normalize(FloorNormal);
+
+	#ifdef MULTI_SAMPLE_AO
+	seed = viewCoord*(float(subframe)+1.0);
+	#endif
+	minDist = pow(10.0,Detail);
+
 	float glow=0.5;
 	vec3 hitNormal = vec3(0.0);
 	vec3 col = vec3(0.0);
 	vec3 RWeight=vec3(1.);
 
-	vec3 prevPos= SRCurrentPt(Ray);
+		vec3 prevPos= SRCurrentPt(Ray);
 	for(int i=0; i<=ReflectionsNumber;i++){
 		vec3 col0 = trace(Ray, hitNormal, glow);
 		vec3 curPos= SRCurrentPt(Ray);

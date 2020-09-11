@@ -138,7 +138,6 @@ void init(); // forward declare
 #else
 void init() {}
 #endif
-//out vec4 gl_FragColor;
 
 #group Post
 uniform float Gamma; slider[0.0,1.0,5.0]

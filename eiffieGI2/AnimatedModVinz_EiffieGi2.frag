@@ -36,7 +36,7 @@ uniform float lightSize2;slider[0.001,0.1,2]
 uniform bool UseBackgroundPicture; checkbox[false]
 uniform vec2 RotatePicXY;slider[(-1.0,-1.0),(0.0,0.0),(1.0,1.0)]
 uniform float BackgroundExposure; slider[-1,1,6]
-uniform sampler2D texture; file[Ditch-River_Env.hdr]
+uniform sampler2D tex; file[Ditch-River_Env.hdr]
 uniform float AmbientStrenght;slider[0.0,1.0,1.0]
 uniform vec3 sunColor;color[1.0,1.0,0.5]
 uniform vec3 sunDirection;slider[(-1.0,-1.0,-1.0),(0.55,1.0,-0.1),(1.0,1.0,1.0)]
@@ -121,9 +121,9 @@ uniform int MengerColorIterations;  slider[0,8,100]
 uniform vec3 MengerOffset; slider[(0,0,0),(1,1,1),(1,1,1)]
 
 uniform bool UseDupli;checkbox[false]
-uniform vec2 OffsetDupX; slider[(0,0,0),(2,1,0),(10,10,10)]
-uniform vec2 OffsetDupY; slider[(0,0,0),(2,1,0),(10,10,10)]
-uniform vec2 OffsetDupZ; slider[(0,0,0),(4,2,0),(10,10,10)]
+uniform vec2 OffsetDupX; slider[(0,0),(2,1),(10,10)]
+uniform vec2 OffsetDupY; slider[(0,0),(2,1),(10,10)]
+uniform vec2 OffsetDupZ; slider[(0,0),(4,2),(10,10)]
 
 // Number of fractal iterations.
 uniform int Iterations;  slider[0,13,100]
@@ -407,10 +407,10 @@ vec3 getBackground( in vec3 rd ){
 
 	if(UseBackgroundPicture){
 		float theta = 1.57079633;
-		backColor = texture2D( texture, spherical(normalize(vec3(rd.x,rd.y*cos(theta)-rd.z*sin(theta), rd.y*sin(theta)+  rd.z*cos(theta) ))).yx+RotatePicXY).xyz*BackgroundExposure;
+		backColor = texture2D( tex, spherical(normalize(vec3(rd.x,rd.y*cos(theta)-rd.z*sin(theta), rd.y*sin(theta)+  rd.z*cos(theta) ))).yx+RotatePicXY).xyz*BackgroundExposure;
 /*vec2 position =  (viewCoord+vec2(1.0))/2.0;
 position.y = 1.0-position.y;
-backColor = texture2D( texture, rd.zy).xyz*BackgroundExposure;*/
+backColor = texture2D( tex, rd.zy).xyz*BackgroundExposure;*/
 }
 	if (GradientSky>0.0) {
 		if(GradientSkyVignette)  tgd = length( coord );
@@ -617,7 +617,7 @@ lightSize2 = 0.1
 UseBackgroundPicture = false
 RotatePicXY = 0,0
 BackgroundExposure = 1
-texture = "Ditch-River_Env.hdr"
+tex = Ditch-River_Env.hdr
 AmbientStrenght = 1
 sunColor = 1,0.960784,0.866667
 sunDirection = 0.86842,-0.08334,1
@@ -718,7 +718,6 @@ FOV = 0.39216
 Eye = -0.370982,-0.033395,-2.87777
 Target = 1.19436,0.130941,6.95466
 Up = -0.175745,0.981535,-0.0755186
-FocalPlane = 0.03
 #endpreset
 
 
