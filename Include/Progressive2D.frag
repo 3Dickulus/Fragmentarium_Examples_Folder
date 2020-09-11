@@ -8,17 +8,9 @@
 
 #vertex
 
-#if __VERSION__ <= 400
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 aaScale;
-#else
-layout(location = 0) in vec4 vertex_position;
-uniform mat4 projectionMatrix;
-out vec2 viewCoord;
-out vec2 coord;
-out vec2 aaScale;
-#endif
 
 #group Camera
 
@@ -53,33 +45,17 @@ void main(void)
 		transform = m1 * m2 * m3 * m4;
 	}
 	float ar = pixelSize.y/pixelSize.x;
-#if __VERSION__ <= 400
 	gl_Position =  gl_Vertex;
 	viewCoord = (gl_Vertex).xy;
 	coord = (transform * ((gl_ProjectionMatrix*gl_Vertex).xy*vec2(ar,1.0))/Zoom+  Center);
 	aaScale = vec2(gl_ProjectionMatrix[0][0],gl_ProjectionMatrix[1][1])*pixelSize/Zoom;
-#else
-	gl_Position =  vertex_position;
-	viewCoord = (vertex_position).xy;
-	coord = (transform * ((projectionMatrix*vertex_position).xy*vec2(ar,1.0))/Zoom+  Center);
-	aaScale = vec2(projectionMatrix[0][0],projectionMatrix[1][1])*pixelSize/Zoom;
-#endif
 }
 
 #endvertex
 
-#if __VERSION__ <= 400
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 aaScale;
-#else
-layout(location = 0) in vec4 vertex_position;
-uniform mat4 projectionMatrix;
-in vec2 viewCoord;
-in vec2 coord;
-in vec2 aaScale;
-out vec4 fragColor;
-#endif
 
 #group Post
 uniform float Gamma; slider[0.0,2.2,5.0]
@@ -132,24 +108,12 @@ void main() {
 #endif
     //  vec2 r = rand(viewCoord*(float(subframe)+1.0))-vec2(0.5);
 #ifdef providesFiltering
-	#if __VERSION__ <= 400
 	vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
-	#else
-	vec4 prev = texture(backbuffer,(viewCoord+vec2(1.0))/2.0);
-	#endif
 	vec4 new = color(coord.xy);
 	#ifdef linearGamma
-		#if __VERSION__ <= 400
 	gl_FragColor = prev+ new;
-		#else
-	fragColor = prev+ new;
-		#endif
 	#else
-		#if __VERSION__ <= 400
 	gl_FragColor = prev+vec4( pow(new.xyz,vec3(Gamma)) , new.w);
-		#else
-	fragColor = prev+vec4( pow(new.xyz,vec3(Gamma)) , new.w);
-		#endif
 	#endif
 #else
 	vec2 r = uniformDisc(vec2( 1.0*(float(subframe+1)) ));
@@ -171,18 +135,10 @@ void main() {
 	vec3 color = pow( color(c),vec3(Gamma));
 	#endif
 
-	#if __VERSION__ <= 400
 	vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
-	#else
-	vec4 prev = texture(backbuffer,(viewCoord+vec2(1.0))/2.0);
-	#endif
 
 	if (! (color==color)) { color =vec3( 0.0); w = 0.0; } // NAN check
-	#if __VERSION__ <= 400
 	gl_FragColor = vec4(prev+ vec4(color*w, w));
-	#else
-	fragColor = vec4(prev+ vec4(color*w, w));
-	#endif
 #endif
 }
 

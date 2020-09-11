@@ -1,35 +1,33 @@
-#version 400 compatibility
-#define USE_DOUBLE
 #include "MathUtils.frag"
 #include "Complex.frag"
-#include "Progressive2D-4.frag"
+#include "Progressive2D.frag"
 #info MetaBrot inspired by the good folks at FractalForums.com 2013-2017
 #group Metabrot
 
-uniform double R; slider[0,0,1]
-uniform double G; slider[0,0.4,1]
-uniform double B; slider[0,0.7,1]
-uniform double ColDiv; slider[1,256,384]
-uniform double bailout; slider[0,6,160]
+uniform float R; slider[0,0,1]
+uniform float G; slider[0,0.4,1]
+uniform float B; slider[0,0.7,1]
+uniform float ColDiv; slider[1,256,384]
+uniform float bailout; slider[0,6,160]
 uniform int  maxiters; slider[10,100,1000]
-uniform dvec2 C; slider[(-2,-2),(-0.2,0.0),(2,2)]
+uniform vec2 C; slider[(-2,-2),(-0.2,0.0),(2,2)]
 uniform bool PreIter; checkbox[false]
 // z = csqr(z)+c; before entering the iteration loop
 uniform int  preiterations; slider[1,2,10]
 uniform int  Type; slider[0,0,2]
 
-double dist = 0.0;
+float dist = 0.0;
 
-dvec2 csqr( dvec2 a ) {
- if(Type==0) return dvec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y );
- if(Type==1) return dvec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y) + a;
- if(Type==2) return dvec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y) - a;
+vec2 csqr( vec2 a ) {
+ if(Type==0) return vec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y );
+ if(Type==1) return vec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y) + a;
+ if(Type==2) return vec2(a.x*a.x-a.y*a.y, 2.0*a.x*a.y) - a;
 }
-dvec2 c = C;
-dvec3 color(dvec2 p)
+vec2 c = C;
+vec3 color(vec2 p)
 {
    //z from current pixel
-	dvec2 z = p;
+	vec2 z = p;
 	if(PreIter) {
 		for(int i=0; i<preiterations; i++) {
 			z = csqr(z)+c;
@@ -47,12 +45,12 @@ dvec3 color(dvec2 p)
 
    if (i < maxiters) {
       // The color scheme here is based on one from Inigo Quilez's Shader Toy:
-      double co =  double(i) + 1. - (log(.5*log(dist))- log(.5*log(bailout))) / log(bailout);
+      float co =  float(i) + 1. - (log(.5*log(dist))- log(.5*log(bailout))) / log(bailout);
       co = 6.2831*sqrt(co/ColDiv)-bailout;
-      return .5+.5*dvec3( cos(co+R), cos(co+G), cos(co+B) );
+      return .5+.5*vec3( cos(co+R), cos(co+G), cos(co+B) );
    }  else {
-      double ld = log(log(6.2831*dist))-log(length(vec2(z)));
-      return dvec3(ld+R,ld+G,ld+B)*(double(dist));
+      float ld = log(log(6.2831*dist))-log(length(vec2(z)));
+      return vec3(ld+R,ld+G,ld+B)*(float(dist));
    }
 }
 

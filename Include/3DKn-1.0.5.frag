@@ -15,7 +15,7 @@ vec3 color(vec3 cameraPos, vec3 direction);
 #camera 3D
 
 #vertex
-#if __VERSION__ <= 400
+
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 PixelScale;
@@ -24,18 +24,6 @@ varying vec3 from;
 varying vec3 Dir;
 varying vec3 UpOrtho;
 varying vec3 Right;
-#else
-layout(location = 0) in vec4 vertex_position;
-uniform mat4 projectionMatrix;
-out vec2 viewCoord;
-out vec2 coord;
-out vec2 PixelScale;
-out vec2 viewCoord2;
-out vec3 from;
-out vec3 Dir;
-out vec3 UpOrtho;
-out vec3 Right;
-#endif
 
 #group Camera
 // Field-of-view
@@ -55,25 +43,14 @@ void init() {}
 
 void main(void)
 {
-#if __VERSION__ <= 400
 	gl_Position =  gl_Vertex;
 	coord = (gl_ProjectionMatrix*gl_Vertex).xy;
-#else
-	gl_Position =  vertex_position;
-	coord = (projectionMatrix*vertex_position).xy;
-#endif
 	coord.x*= pixelSize.y/pixelSize.x;
 
 	// we will only use gl_ProjectionMatrix to scale and translate, so the following should be OK.
-#if __VERSION__ <= 400
 	PixelScale =vec2(pixelSize.x*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
 	viewCoord = gl_Vertex.xy;
 	viewCoord2= (gl_ProjectionMatrix*gl_Vertex).xy;
-#else
-	PixelScale =vec2(pixelSize.x*projectionMatrix[0][0], pixelSize.y*projectionMatrix[1][1]);
-	viewCoord = vertex_position.xy;
-	viewCoord2= (projectionMatrix*vertex_position).xy;
-#endif
 
 	from = Eye;
 	Dir = normalize(Target-Eye);
@@ -92,7 +69,6 @@ uniform bool EquiRectangular; checkbox[false]
 #define PI  3.14159265358979323846264
 
 // Camera position and target.
-#if __VERSION__ <= 400
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 PixelScale;
@@ -101,17 +77,6 @@ varying vec3 from;
 varying vec3 Dir;
 varying vec3 UpOrtho;
 varying vec3 Right;
-#else
-in vec2 viewCoord;
-in vec2 coord;
-in vec2 PixelScale;
-in vec2 viewCoord2;
-in vec3 from;
-in vec3 Dir;
-in vec3 UpOrtho;
-in vec3 Right;
-out vec4 fragColor;
-#endif
 
 //#if 0
 //uniform int backbufferCounter;//  subframe; //
@@ -296,21 +261,13 @@ void main() {
 	vec3 c =  color(Ray);
 
 	// Accumulate
-#if __VERSION__ <= 400
 	vec4 prev = texture2D(backbuffer,(viewCoord+vec2(1.0))/2.0);
-#else
-	vec4 prev = texture(backbuffer,(viewCoord+vec2(1.0))/2.0);
-#endif
 
 	float w =1.0-length(disc);
 	if (GaussianWeight>0.) {
 		w = exp(-dot(disc,disc)/GaussianWeight)-exp(-1./GaussianWeight);
 	}
 
-#if __VERSION__ <= 400
 	gl_FragColor =(prev+ vec4(c*w, w));
-#else
-	fragColor =(prev+ vec4(c*w, w));
-#endif
 
 }

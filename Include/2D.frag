@@ -6,17 +6,9 @@
 
 #vertex
 
-#if __VERSION__ <= 400
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 aaScale;
-#else
-layout(location = 0) in vec4 vertex_position;
-uniform mat4 projectionMatrix;
-out vec2 viewCoord;
-out vec2 coord;
-out vec2 aaScale;
-#endif
 
 #group Camera
 
@@ -52,34 +44,18 @@ void main(void)
 		transform = m1 * m2 * m3 * m4;
 	}
 	float ar = pixelSize.y/pixelSize.x;
-#if __VERSION__ <= 400
 	gl_Position =  gl_Vertex;
 	viewCoord = (gl_ProjectionMatrix*gl_Vertex).xy;
 	coord = (transform*((gl_ProjectionMatrix*gl_Vertex).xy*vec2(ar,1.0))/Zoom+  Center);
 	aaScale = vec2(gl_ProjectionMatrix[0][0],gl_ProjectionMatrix[1][1])*pixelSize*AntiAliasScale/Zoom;
-#else
-	gl_Position =  vertex_position;
-	viewCoord = (projectionMatrix*vertex_position).xy;
-	coord = (transform*((projectionMatrix*vertex_position).xy*vec2(ar,1.0))/Zoom+  Center);
-	aaScale = vec2(projectionMatrix[0][0],projectionMatrix[1][1])*pixelSize*AntiAliasScale/Zoom;
-#endif
 }
 
 #endvertex
 
 
-#if __VERSION__ <= 400
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 aaScale;
-#else
-layout(location = 0) in vec4 vertex_position;
-uniform mat4 projectionMatrix;
-in vec2 viewCoord;
-in vec2 coord;
-in vec2 aaScale;
-out vec4 fragColor;
-#endif
 
 vec2 aaCoord;
 uniform vec2 pixelSize;
@@ -111,10 +87,7 @@ void main() {
 #ifdef providesInit
 	init();
 #endif
-	#if __VERSION__ <= 400
+
 	gl_FragColor = vec4(getColor2Daa(coord.xy),1.0);
-	#else
-	fragColor = vec4(getColor2Daa(coord.xy),1.0);
-	#endif
 }
 

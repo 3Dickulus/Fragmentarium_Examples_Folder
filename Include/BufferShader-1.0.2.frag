@@ -4,23 +4,12 @@
 
 #vertex
 
-#if __VERSION__ <= 400
 varying vec2 coord;
-#else
-layout(location = 0) in vec4 vertex_position;
-uniform mat4 projectionMatrix;
-out vec2 coord;
-#endif
 
 void main(void)
 {
-#if __VERSION__ <= 400
 	gl_Position =  gl_Vertex;
 	coord = (gl_ProjectionMatrix*gl_Vertex).xy;
-#else
-	gl_Position =  vertex_position;
-	coord = (projectionMatrix*vertex_position).xy;
-#endif
 }
 
 #endvertex
@@ -68,13 +57,10 @@ vec3 sigmoid3(vec3 t) {
 	return vec3(sigmoid(t.x),sigmoid(t.y),sigmoid(t.z));
 }
 
-#if __VERSION__ <= 400
 varying vec2 coord;
-#else
-in vec2 coord;
-out vec4 fragColor;
-#endif
+
 uniform sampler2D frontbuffer;
+
 vec4 bloom(vec2 pos, vec2 quality){//see: https://gist.github.com/BlackBulletIV/4218802
         int samples=2*BloomTaps+1;
         vec4 sum = vec4(0);
@@ -87,11 +73,7 @@ vec4 bloom(vec2 pos, vec2 quality){//see: https://gist.github.com/BlackBulletIV/
                 {
 			float wy=float(y)/float(diff); wy=1.-wy*wy; wy=wy*wy;
                         vec2 offset = vec2(x, y) * sizeFactor;
-#if __VERSION__ <= 400
                         sum += texture2D(frontbuffer, (pos+offset))*wx*wy;
-#else
-                        sum += texture(frontbuffer, (pos+offset))*wx*wy;
-#endif
                 }
         }
         return (sum / float(samples * samples));
@@ -100,11 +82,7 @@ vec4 bloom(vec2 pos, vec2 quality){//see: https://gist.github.com/BlackBulletIV/
 void main() {
 	vec2 pos = (coord+vec2(1.0))/2.0;
 	vec2 pixelsiz=vec2(dFdx(pos.x),dFdy(pos.y)) * BloomStrong;
-#if __VERSION__ <= 400
 	vec4 tex = texture2D(frontbuffer, pos);
-#else
-	vec4 tex = texture(frontbuffer, pos);
-#endif
 	vec3 c = tex.xyz/tex.a;
 
         if(Bloom){
@@ -137,9 +115,5 @@ void main() {
 	}
 	c = pow(c, vec3(1.0/Gamma));
 
-#if __VERSION__ <= 400
 	gl_FragColor = vec4(c,1.0);
-#else
-	fragColor = vec4(c,1.0);
-#endif
 }
