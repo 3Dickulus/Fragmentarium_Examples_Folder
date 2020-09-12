@@ -36,7 +36,7 @@ uniform float lightSize2;slider[0.001,0.1,2]
 uniform bool UseBackgroundPicture; checkbox[false]
 uniform vec2 RotatePicXY;slider[(-1.0,-1.0),(0.0,0.0),(1.0,1.0)]
 uniform float BackgroundExposure; slider[-1,1,6]
-uniform sampler2D tex; file[Ditch-River_Env.hdr]
+uniform sampler2D mytexture; file[Ditch-River_Env.hdr]
 uniform float AmbientStrenght;slider[0.0,1.0,1.0]
 uniform vec3 sunColor;color[1.0,1.0,0.5]
 uniform vec3 sunDirection;slider[(-1.0,-1.0,-1.0),(0.55,1.0,-0.1),(1.0,1.0,1.0)]
@@ -92,12 +92,12 @@ uniform bool CycleColors; checkbox[false]
 uniform float Cycles; slider[0.1,1.1,32.3]
 
 //ColoringMode - LineArt
-uniform bool OrbitTrap; checkbox[True]
-uniform bool SPecialZ; checkbox[False]
-uniform bool LineArt2; checkbox[False]
-uniform bool LineArt3; checkbox[False]
-uniform bool LineArt4; checkbox[False]
-uniform bool LineArt5; checkbox[False]
+uniform bool OrbitTrap; checkbox[true]
+uniform bool SPecialZ; checkbox[false]
+uniform bool LineArt2; checkbox[false]
+uniform bool LineArt3; checkbox[false]
+uniform bool LineArt4; checkbox[false]
+uniform bool LineArt5; checkbox[false]
 //LineArt Param
 uniform float LineArtPower; slider[0,0.1,5]
 uniform float LineArtShow; slider[0,0.3,1]
@@ -407,10 +407,10 @@ vec3 getBackground( in vec3 rd ){
 
 	if(UseBackgroundPicture){
 		float theta = 1.57079633;
-		backColor = texture2D( tex, spherical(normalize(vec3(rd.x,rd.y*cos(theta)-rd.z*sin(theta), rd.y*sin(theta)+  rd.z*cos(theta) ))).yx+RotatePicXY).xyz*BackgroundExposure;
+		backColor = texture2D( mytexture, spherical(normalize(vec3(rd.x,rd.y*cos(theta)-rd.z*sin(theta), rd.y*sin(theta)+  rd.z*cos(theta) ))).yx+RotatePicXY).xyz*BackgroundExposure;
 /*vec2 position =  (viewCoord+vec2(1.0))/2.0;
 position.y = 1.0-position.y;
-backColor = texture2D( tex, rd.zy).xyz*BackgroundExposure;*/
+backColor = texture2D( mytexture, rd.zy).xyz*BackgroundExposure;*/
 }
 	if (GradientSky>0.0) {
 		if(GradientSkyVignette)  tgd = length( coord );
@@ -570,7 +570,7 @@ void main() {//for slow accumulation (needs texture same size)
 	rd += gd.x*uu + gd.y*vv;
 	clr+=scene(ro,normalize(rd));
 	clr.rgb = clamp(pow(clr.rgb,gammaCorrection),0.0,1.0);
-	gl_FragColor = vec4(mix(texture2D(tex,gl_FragCoord.xy/vec2(size.xy)).rgb,clr.rgb,1.0/(iRay+1)),1.0);
+	gl_FragColor = vec4(mix(texture2D(mytexture,gl_FragCoord.xy/vec2(size.xy)).rgb,clr.rgb,1.0/(iRay+1)),1.0);
 	gl_FragDepth = clamp(clr.a,0.01,0.99);
 }*/
 

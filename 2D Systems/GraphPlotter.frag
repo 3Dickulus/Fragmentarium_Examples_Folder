@@ -17,7 +17,7 @@ float rand0(vec2 co){
 
 // Put your user defined function here...
 float function(float x) {
-	x= 1.0*sin(1.0/tan(x)); return x;
+	x= sin(1.0/tan(x)); return x;
 }
 
 uniform float Jitter; slider[0,0.5,2]

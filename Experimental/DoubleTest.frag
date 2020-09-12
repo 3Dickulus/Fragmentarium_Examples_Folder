@@ -1,4 +1,4 @@
-#version 400 compatibility
+#version 410 compatibility
 
 #define USE_DOUBLE
 
@@ -78,8 +78,8 @@ dvec3 IQColor(double i, dvec2 zmin, dvec2 z) {
 	double co;
 	double p = Power*Power;
 	
-	if(Meta && Sin) co = i;
-    //co = i + 1. - log(.5+.5*log2(length(z))/(.5+.5*log2(Power)))/log2(Bailout);
+	if(Meta && Sin)// co = i;
+    co = i + 1. - log(.5+.5*log2(length(z))/(.5+.5*log2(Power)))/log2(Bailout);
 	//co = i - log(log2( dist )/log2( Bailout))/log2(Bailout );
 	else
 	if(!Meta && !Sin)
@@ -173,7 +173,7 @@ Brightness = 1
 Contrast = 1
 Saturation = 1
 Center = -0.241051197052,0.38701269030571
-Zoom = 0.64841693546845
+Zoom = 0.64841693546845 Logarithmic
 Exposure = 1
 ToneMapping = 1
 AARange = 1
@@ -370,4 +370,44 @@ StalksInside = false
 StalksOutside = false
 Invert = true
 InvertC = 0,0
+#endpreset
+
+#preset LogTest
+TrigIter = 5
+TrigLimit = 1.10000000000000009
+Center = -0.209418407321533495,-0.401005177239133093
+EnableTransform = true
+RotateAngle = 0
+StretchAngle = 0
+StretchAmount = 0
+Gamma = 4
+Exposure = 1
+Brightness = 1
+Contrast = 1
+Saturation = 1
+ToneMapping = 1
+AARange = 1
+AAExp = 2
+GaussianAA = true
+RetryMax = 11
+RetryEntry = 57
+RetryBias = 20
+Iterations = 863
+PreIter = 2
+R = 0.25
+G = 0.5
+B = 0.75
+ColDiv = 12
+Power = 1.99399978760630003
+Bailout = 64
+Formula = 0
+Julia = true
+JuliaXY = 0.634666860103609953,0.0472820438444599978
+Meta = false
+Sin = false
+StalksInside = false
+StalksOutside = false
+Invert = true
+InvertC = 0,0
+Zoom = 100000000000000 Logarithmic
 #endpreset

@@ -38,7 +38,7 @@ vec3 color(vec3 from, vec3 dir)
 {
 
 	//volumetric rendering
-	float s=float(firststep)*stepsize+dither*stepsize*(rand(subframe*.87695)-.5),fade=1., fade2=1., pa=0., sd=0.1;
+	float s=float(firststep)*stepsize+dither*stepsize*(rand(float(subframe)*.87695)-.5),fade=1., fade2=1., pa=0., sd=0.1;
 	vec3 v=vec3(0.);
 	for (int r=0; r<volsteps; r++) {
 		vec3 p=from+s*dir;
@@ -55,7 +55,7 @@ vec3 color(vec3 from, vec3 dir)
 		v+=normalize(vec3(cv,cv*cv,cv*cv*cv))*pow(a,starbright)*brightness*fade*.001; // coloring based on distance
 		fade*=1.-max(0.,darkmatter-a*darktreshold*.05); // dark matter, don't render near
 		fade*=max(0.,1.-a*opacity*.01);
-		fade*=max(0.,1-distfading);
+		fade*=max(0.,1.-distfading);
 		if (fade<.01) break;
 		pa=a;
 		s+=stepsize;

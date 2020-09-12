@@ -5,7 +5,7 @@
 // Set up a sampler2D as below, and read using the texture2D command.
 #group MySystem
 
-uniform float T ;slider[0,4,10]
+uniform float T; slider[0,4,10]
 uniform float R; slider[0,2,10]
 uniform float step; slider[0,0.004,0.01]
 uniform float time;
@@ -53,8 +53,9 @@ vec3 color(vec2 c) {
 #preset Default
 Center = -0.0214904,-0.00195827
 Zoom = 2.34384
-AntiAliasScale = 1
-AntiAlias = 1
+AARange = 2
+AAExp = 1
+GaussianAA = true
 T = 4.3511
 R = 2.2308
 step = 0.0041

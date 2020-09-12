@@ -1,7 +1,7 @@
 // Output generated from file: C:/Fractales/Fragmentarium/surfkifs.frag
 // Created: dom 5. feb 14:04:32 2012
 // Output generated from file: C:/Fractales/Fragmentarium/Examples/SurfaceKIFS.frag
-// Created: mié 25. ene 22:59:36 2012
+// Created: miï¿½ 25. ene 22:59:36 2012
 #info Mandelbox Distance Estimator (Rrrola's version).
 //#donotrun
 #buffer RGBA32F

@@ -1,6 +1,6 @@
 #include "MathUtils.frag"
 #include "3D.frag"
-uniform sampler2D texture; file[Ditch-River_2k.hdr]
+uniform sampler2D texture1; file[Ditch-River_2k.hdr]
 uniform sampler2D texture2; file[Ditch-River_Env.hdr]
 
 // An example of working with 3D without a distance estimator
@@ -48,11 +48,11 @@ vec3 color(vec3 pos, vec3 dir) {
 	
 	if (intersect<10000.) {
 		vec3 reflected = -2.0*dot(dir,finalNormal)*finalNormal+dir;
-		vec3 col = Specular*equirectangularMap(reflected, texture);
+		vec3 col = Specular*equirectangularMap(reflected, texture1);
 		vec3 col2 = Diffuse*equirectangularMap(finalNormal, texture2);
 		return col+col2;
 	}
-	vec3 col =equirectangularMap(dir,texture);
+	vec3 col =equirectangularMap(dir,texture1);
 	return col;
 }
 

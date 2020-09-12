@@ -2,7 +2,7 @@
 #include "SoC.frag"
 
 //accumulate color samples in the variable mcol by adding your color whenever bColoring==true
-//mcol is a vec4 with mcol.a used for reflections (0..1) 
+//mcol is a vec4 with mcol.a used for reflections (0..1)
 float DE(vec3 z0){
 	vec4 c = vec4(z0,1.0),z = c;
 	float r = length(z.xyz),zr,zo,zi,p=8.0;
@@ -28,6 +28,7 @@ float DE(vec3 z0){
 FOV = 0.62536
 Eye = 0.205,0.45,-2.252
 Target = 0,0,0
+Up = 0,1,0
 FudgeFactor = 1
 Specular = 1.6456
 SpecularExp = 16.364
@@ -41,5 +42,5 @@ ShadowCone = 0.05
 LightColor = 1,0.9,0.4
 LightDir = 0.9394,0.75758,-0.69696
 BGColor = 0.5,0.5,0.5
-Up = 0,1,0
+
 #endpreset

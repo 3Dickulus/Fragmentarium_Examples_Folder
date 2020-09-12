@@ -3,18 +3,15 @@
 // 
 // Not as good as his, but still interesting.
 // 
-uniform float time;
+#include "MathUtils.frag"
+#include "Progressive2D.frag"
 
-#include "2D.frag"
+uniform float time;
 
 uniform float Mul; slider[0,2,10]
 uniform float Decay; slider[0,0.5,2]
 uniform int Iterations; slider[0,1,19]
 
-float rand(vec2 co){
-	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
-	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
 
 float noise2f( in vec2 p )
 {

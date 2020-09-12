@@ -1,5 +1,3 @@
-#version 110
-#buffer RGBA16
 #include "2D.frag"
 
 // A 'Game of Life' implementation
