@@ -517,7 +517,7 @@ vec3 palette(vec4 p) {
 #group Texture
 uniform bool ifTexture; checkbox[false]
 //uniform sampler2D htex; file[../]
-uniform sampler2D tex; file[texture.jpg]
+uniform sampler2D tex; file[seamless-texture.jpg]
 uniform float TextSpeedMult; slider[.01,1.,20.]
 uniform float TextureSpeed; slider[-5.,1.,5.]
 float texturespeed=TextureSpeed*TextSpeedMult;
