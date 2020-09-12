@@ -75,7 +75,6 @@ vec3 sigmoid3(vec3 t) {
 }
 
 varying vec2 coord;
-
 uniform sampler2D frontbuffer;
 
 void main() {

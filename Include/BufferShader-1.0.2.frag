@@ -21,9 +21,9 @@ uniform float Contrast;
 uniform float Saturation;
 uniform int ToneMapping;
 uniform bool Bloom;
-uniform float BloomIntensity;
+uniform float BloomIntensity; 
 uniform float BloomPow;
-uniform int   BloomTaps;
+uniform int   BloomTaps; 
 uniform float BloomStrong;
 /*
 ** Based on: http://mouaif.wordpress.com/2009/01/22/photoshop-gamma-correction-shader/
@@ -58,38 +58,34 @@ vec3 sigmoid3(vec3 t) {
 }
 
 varying vec2 coord;
-
 uniform sampler2D frontbuffer;
-
 vec4 bloom(vec2 pos, vec2 quality){//see: https://gist.github.com/BlackBulletIV/4218802
-        int samples=2*BloomTaps+1;
-        vec4 sum = vec4(0);
-        int diff = (samples - 1) / 2;
-        vec2 sizeFactor = quality;
-        for (int x = -diff; x <= diff; x++)
-        {
+	int samples=2*BloomTaps+1;
+	vec4 sum = vec4(0);
+	int diff = (samples - 1) / 2;
+	vec2 sizeFactor = quality;
+	for (int x = -diff; x <= diff; x++)
+	{
 		float wx=float(x)/float(diff); wx=1.-wx*wx; wx=wx*wx;
-                for (int y = -diff; y <= diff; y++)
-                {
+		for (int y = -diff; y <= diff; y++)
+		{
 			float wy=float(y)/float(diff); wy=1.-wy*wy; wy=wy*wy;
-                        vec2 offset = vec2(x, y) * sizeFactor;
-                        sum += texture2D(frontbuffer, (pos+offset))*wx*wy;
-                }
-        }
-        return (sum / float(samples * samples));
+			vec2 offset = vec2(x, y) * sizeFactor;
+			sum += texture2D(frontbuffer, (pos+offset))*wx*wy;
+		}
+	}
+	return (sum / float(samples * samples)); 
 }
-
 void main() {
 	vec2 pos = (coord+vec2(1.0))/2.0;
-	vec2 pixelsiz=vec2(dFdx(pos.x),dFdy(pos.y)) * BloomStrong;
+	vec2 pixelsiz=vec2(dFdx(pos.x),dFdy(pos.y))*BloomStrong;
 	vec4 tex = texture2D(frontbuffer, pos);
 	vec3 c = tex.xyz/tex.a;
-
-        if(Bloom){
-                vec4 b=bloom(pos,pixelsiz);
-                b=b/b.w;
-                c+=BloomIntensity*pow(b.xyz,vec3(BloomPow));
-        }
+	if(Bloom){
+		vec4 b=bloom(pos,pixelsiz);
+		b=b/b.w;
+		c+=BloomIntensity*pow(b.xyz,vec3(BloomPow));
+	}
 	if (ToneMapping==1) {
 		// Linear
 		c = c*Exposure;
@@ -110,10 +106,9 @@ void main() {
 		c*=Exposure;
 		c = c/(1.+c);
 		c = ContrastSaturationBrightness(c, Brightness, Saturation, Contrast);
-	}  else if (ToneMapping==5) {
+	}  else if (ToneMapping==5) {		
 		c = sigmoid3(c*Exposure+vec3(Brightness-1.0));
 	}
 	c = pow(c, vec3(1.0/Gamma));
-
 	gl_FragColor = vec4(c,1.0);
 }
