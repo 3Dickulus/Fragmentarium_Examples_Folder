@@ -1,8 +1,8 @@
 #donotrun
 
-#if __VERSION__ >= 300
-#extension GL_NV_gpu_shader5 : enable
-#endif
+// #if __VERSION__ >= 300
+// #extension GL_NV_gpu_shader5 : enable
+// #endif
 
 #ifdef WANG_HASH
 // required for Wang hash, placing this here means this file must be the first #included file

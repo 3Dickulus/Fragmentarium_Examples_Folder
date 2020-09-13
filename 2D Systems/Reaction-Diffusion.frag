@@ -1,17 +1,18 @@
-//#buffershader "BufferShaderRD.frag"
+
+#buffershader "BufferShaderX.frag"
 #include "2D.frag"
 
 // A simple Gray-Scott Reaction Diffusion model.
 // Based on Tim Hutton's example from Ready: http://code.google.com/p/reaction-diffusion/source/browse/trunk/GrayScott/gray_scott.cpp
 
 // These are Fragmentarium host defines.
-// #define DontClearOnChange
-#define IterationsBetweenRedraws 31
+#define DontClearOnChange
+#define IterationsBetweenRedraws 10
 #define SubframeMax 0
 
 #group ReactionDiffusion
 
-uniform sampler2D backBuffer;
+uniform sampler2D backbuffer;
 
 vec2 position = (viewCoord*1.0+vec2(1.0))/2.0;
 
@@ -21,35 +22,35 @@ float rand(vec2 co){
 	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-#TexParameter backBuffer GL_TEXTURE_MAG_FILTER GL_NEAREST
-#TexParameter backBuffer GL_TEXTURE_WRAP_S GL_REPEAT
-#TexParameter backBuffer GL_TEXTURE_WRAP_T GL_REPEAT
+#TexParameter backbuffer GL_TEXTURE_MAG_FILTER GL_NEAREST
+#TexParameter backbuffer GL_TEXTURE_WRAP_S GL_REPEAT
+#TexParameter backbuffer GL_TEXTURE_WRAP_T GL_REPEAT
 
 vec4 P = vec4(pixelSize, 0.0, -pixelSize.x);
 
 // nine point stencil
 vec4 laplacian9() {
 	return  
-	0.5* texture2D( backBuffer,  position - P.xy ) // first row
-	+ texture2D( backBuffer,  position - P.zy )
-	+  0.5* texture2D( backBuffer,  position - P.wy )
-	+  texture2D( backBuffer,  position - P.xz) // seond row
-	- 6.0* texture2D( backBuffer,  position )
-	+   texture2D( backBuffer,  position + P.xz )
-	+  0.5*texture2D( backBuffer,  position +P.wy)  // third row
-	+ texture2D( backBuffer,  position +P.zy )
-	+   0.5*texture2D( backBuffer,  position + P.xy   );	
+	0.5* texture2D( backbuffer,  position - P.xy ) // first row
+	+ texture2D( backbuffer,  position - P.zy )
+	+  0.5* texture2D( backbuffer,  position - P.wy )
+	+  texture2D( backbuffer,  position - P.xz) // seond row
+	- 6.0* texture2D( backbuffer,  position )
+	+   texture2D( backbuffer,  position + P.xz )
+	+  0.5*texture2D( backbuffer,  position +P.wy)  // third row
+	+ texture2D( backbuffer,  position +P.zy )
+	+   0.5*texture2D( backbuffer,  position + P.xy   );	
 }
 
 
 // five point stencil
 vec4  laplacian5() {
 	return 
-	+  texture2D( backBuffer, position - P.zy)
-	+  texture2D( backBuffer, position - P.xz) 
-	-  4.0 * texture2D( backBuffer,  position )
-	+ texture2D( backBuffer,  position + P.xz )
-	+ texture2D( backBuffer,  position +  P.zy );
+	+  texture2D( backbuffer, position - P.zy)
+	+  texture2D( backbuffer, position - P.xz) 
+	-  4.0 * texture2D( backbuffer,  position )
+	+ texture2D( backbuffer,  position + P.xz )
+	+ texture2D( backbuffer,  position +  P.zy );
 }
 
 uniform vec2 Diffusion; slider[(0,0),(0.082,0.041),(0.2,0.2)]
@@ -68,7 +69,7 @@ vec3 color(vec2 z) {
 		}
 	}
 	
-	vec4 v = texture2D( backBuffer,    position   );
+	vec4 v = texture2D( backbuffer,    position   );
 	v.z = 0.0;
 	vec2 lv = laplacian9().xy;
 	float xyy = v.x*v.y*v.y;
