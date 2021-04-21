@@ -34,7 +34,7 @@ void main(void)
 	gl_Position =  gl_Vertex;
 	coord = (gl_ProjectionMatrix*gl_Vertex).xy;
 	coord.x*= pixelSize.y/pixelSize.x;
-	vec2 ps =vec2(pixelSize.x*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
+	vec2 ps =vec2(pixelSize.y*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
 	zoom = length(ps);
 	from = Eye;
 	Dir = normalize(Target-Eye);

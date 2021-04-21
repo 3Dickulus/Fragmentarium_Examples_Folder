@@ -48,7 +48,7 @@ void main(void)
 	gl_Position =  gl_Vertex;
 	viewCoord = gl_Vertex.xy;
 	coord = vec2(transform * ((gl_ProjectionMatrix*gl_Vertex).xy*vec2(ar,1.0))/float(Zoom));
-	aaScale = vec2(gl_ProjectionMatrix[0][0],gl_ProjectionMatrix[1][1])*pixelSize/float(Zoom);
+	aaScale = vec2(gl_ProjectionMatrix[0][0],gl_ProjectionMatrix[1][1])*pixelSize.yy/float(Zoom);
 }
 
 #endvertex

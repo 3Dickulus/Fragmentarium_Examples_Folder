@@ -54,7 +54,7 @@ void main(void)
 	coord = (gl_ProjectionMatrix*gl_Vertex).xy;
 	coord.x*= pixelSize.y/pixelSize.x;
 	// we will only use gl_ProjectionMatrix to scale and translate, so the following should be OK.
-	vec2 ps =vec2(pixelSize.x*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
+	vec2 ps =vec2(pixelSize.y*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
 	zoom = length(ps);
 	from = Eye;
 	vec3 Dir = normalize(Target-Eye);
