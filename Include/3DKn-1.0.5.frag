@@ -48,7 +48,7 @@ void main(void)
 	coord.x*= pixelSize.y/pixelSize.x;
 
 	// we will only use gl_ProjectionMatrix to scale and translate, so the following should be OK.
-	PixelScale =vec2(pixelSize.x*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
+	PixelScale =vec2(pixelSize.y*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
 	viewCoord = gl_Vertex.xy;
 	viewCoord2= (gl_ProjectionMatrix*gl_Vertex).xy;
 
