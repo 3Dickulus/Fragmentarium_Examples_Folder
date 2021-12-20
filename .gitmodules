@@ -14,3 +14,9 @@
 	path = Claude
 	url = https://github.com/claudeha/fragm-examples.git
 	branch = main
+
+[submodule "neozhaoliang"]
+	path = neozhaoliang
+	url = https://github.com/neozhaoliang/Hyperbolic-Honeycombs.git
+	branch = main
+
