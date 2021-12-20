@@ -15,3 +15,6 @@
 	url = https://github.com/claudeha/fragm-examples.git
 	branch = main
 
+[submodule "Hyperbolic-Honeycombs"]
+	path = Hyperbolic-Honeycombs
+	url = https://github.com/neozhaoliang/Hyperbolic-Honeycombs.git
