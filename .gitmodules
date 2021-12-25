@@ -21,3 +21,4 @@
 [submodule "gannjondal"]
 	path = gannjondal
 	url = https://github.com/gannjondal/fragm-examples.git
+	branch = main
