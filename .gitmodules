@@ -22,3 +22,6 @@
 	path = gannjondal
 	url = https://github.com/gannjondal/fragm-examples.git
 	branch = main
+[submodule "Kashaders"]
+	path = Kashaders
+	url = https://github.com/knightyFF/Kashaders
