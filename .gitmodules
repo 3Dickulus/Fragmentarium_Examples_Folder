@@ -25,3 +25,4 @@
 [submodule "Kashaders"]
 	path = Kashaders
 	url = https://github.com/knightyFF/Kashaders
+	branch=main
