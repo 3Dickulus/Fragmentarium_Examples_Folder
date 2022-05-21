@@ -132,8 +132,8 @@ uniform int ColorIterations;  slider[1,13,20]
 #group Floor
 
 uniform float UseOrbit;slider[0.0,0.0,1.0]
-uniform bool UseFloor; checkbox[True]
-uniform bool UseWall; checkbox[True]
+uniform bool UseFloor; checkbox[true]
+uniform bool UseWall; checkbox[true]
 uniform bool UseCurvedFloor; checkbox[false]
 
 uniform vec3 floorColor;color[0.45,0.64,0.53]

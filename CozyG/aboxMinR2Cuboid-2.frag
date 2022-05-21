@@ -26,7 +26,7 @@ uniform vec3 limit; slider[(-5.0,-5.0,-5.0),(1.0,1.0,1.0),(5.0,5.0,5.0)]
 uniform float Scale;  slider[-5.0,2.0,5.0]
 
 uniform float MaxR2;  slider[0,1.0,2.0]
-uniform bool z2; checkbox[False]
+uniform bool z2; checkbox[false]
 uniform vec3 limitMinR2; slider[(0.0,0.0,0.0),(0.2,0.2,0.2),(2.0,2.0,2.0)]
 
 uniform vec3 c3Mul; slider[(-5.0,-5.0,-5.0),(1.0,1.0,1.0),(5.0,5.0,5.0)]

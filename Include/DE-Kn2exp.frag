@@ -464,7 +464,7 @@ uniform vec3 color3;color[1.,0.37,0.]
 uniform bool Sharp3to0;checkbox[false]
 uniform float Dist3to0;slider[0,1,3]
 
-//uniform bool Orbit; checkbox[False]
+//uniform bool Orbit; checkbox[false]
 uniform vec4 orbitStrengthXYZR;slider[(-3,-3,-3,-3),(1,1,1,1),(3,3,3,3)]
 
 float PaletteCycleDistance=

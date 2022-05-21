@@ -36,7 +36,7 @@ uniform float HitDistanceMultiplier;slider[0.03,1,400]
 uniform float SoftShadows;slider[1.0,8.0,16.0]
 uniform float Suspicious;slider[1.0,1.0,16.0]
 uniform float GloubiGoulba;slider[0.0,0.0,8]
-uniform bool buildMask; checkbox[False]
+uniform bool buildMask; checkbox[false]
 
 #group Emissive
 uniform bool UseEmissive; checkbox[false]
@@ -118,9 +118,9 @@ uniform vec3 MovXYZ; slider[(-5.0,-5.0,0.0),(0.0,0.0,0.0),(5.0,5.0,10.0)];
 //Precise Move Object
 uniform vec3 FineMove; slider[(-0.1,-0.1,-0.1),(0.0,0.0,0.0),(0.1,0.1,0.1)];
 #group Kisocahedron
-uniform bool Prefold; checkbox[True]
-uniform bool Mode2; checkbox[False]
-uniform bool Mode3; checkbox[False]
+uniform bool Prefold; checkbox[true]
+uniform bool Mode2; checkbox[false]
+uniform bool Mode3; checkbox[false]
 uniform float PhiMain; slider[-3,1.618,20]
 uniform float PhiFine; slider[-1.0,0.0,1.0]
 uniform float Scale; slider[0.00,2.0,4.00]
@@ -133,25 +133,25 @@ uniform vec3 Rot2; slider[(-1,-1,-1),(1,1,1),(1,1,1)]
 // Number of fractal iterations.
 uniform int Iterations;  slider[0,13,100]
 //ColoringMode
-uniform bool OrbitTrap; checkbox[True]
-uniform bool SPecialZ; checkbox[False]
-uniform bool LineArt2; checkbox[False]
-uniform bool LineArt3; checkbox[False]
-uniform bool LineArt4; checkbox[False]
-uniform bool LineArt5; checkbox[False]
+uniform bool OrbitTrap; checkbox[true]
+uniform bool SPecialZ; checkbox[false]
+uniform bool LineArt2; checkbox[false]
+uniform bool LineArt3; checkbox[false]
+uniform bool LineArt4; checkbox[false]
+uniform bool LineArt5; checkbox[false]
 
 //LineArt Param
 uniform float LineArtPower; slider[0,0.1,5]
 uniform float LineArtShow; slider[0,0.3,1]
 uniform int ColorIterations;  slider[0,3,100]
-uniform bool Disolve; checkbox[False]
+uniform bool Disolve; checkbox[false]
 uniform vec3 DisolveR; slider[(-1,-1,-1),(0,1,1),(1,1,1)]
-uniform bool Revert; checkbox[False]
+uniform bool Revert; checkbox[false]
 uniform float RevertR; slider[-1.01,-1,-0.94]
 
 #group Floor
 uniform bool UseOrbit; checkbox[false]
-uniform bool UseFloor; checkbox[True]
+uniform bool UseFloor; checkbox[true]
 uniform vec3 floorColor;color[0.45,0.64,0.53]
 uniform float floorReflection;slider[0.0,0.1,1.0]
 uniform float floorGloss;slider[0.0,0.9,1.0]
