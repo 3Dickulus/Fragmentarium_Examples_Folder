@@ -643,17 +643,17 @@ double atan(double y, double x){
     if(y < 0.0) th = -th;              // [-π,π]
     th *= sign_factor;
 
-  if(x1 > 0.0){
-    return th;
-  }else if(x1 < 0.0 && y1 >= 0.0){
-    return th + M_PI;
-  }else if(x1 < 0.0 && y1 < 0.0){
-    return th - M_PI;
-  }else if(x1 == 0.0 && y1 > 0.0){
-    return M_PI/2.0;
-  }else if(x1 == 0.0 && y1 < 0.0){
-    return -M_PI/2.0;
-  }
+    if(x1 > 0.0){
+      return th;
+    }else if(x1 < 0.0 && y1 >= 0.0){
+      return th + M_PI;
+    }else if(x1 < 0.0 && y1 < 0.0){
+     return th - M_PI;
+    }else if(x1 == 0.0 && y1 > 0.0){
+      return M_PI/2.0;
+    }else if(x1 == 0.0 && y1 < 0.0){
+      return -M_PI/2.0;
+    }
   return 0.0;
 }
 #endif
