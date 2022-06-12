@@ -610,6 +610,7 @@ vec4 atan(vec4 y, vec4 x) { return _builtin_atan(y, x); }
 double atan(double y, double x){
 
     double sign_factor = 1.0;
+    double x1=x, y1=y;
     /*
       Account for signs.
     */
@@ -640,7 +641,20 @@ double atan(double y, double x){
     if(inv) th = M_PI2 - th;           // [0,π/2]
 //     if(x < 0.0) th = M_PI - th;        // [0,π]
     if(y < 0.0) th = -th;              // [-π,π]
-    return sign_factor * th;
+    th *= sign_factor;
+
+  if(x1 > 0.0){
+    return th;
+  }else if(x1 < 0.0 && y1 >= 0.0){
+    return th + M_PI;
+  }else if(x1 < 0.0 && y1 < 0.0){
+    return th - M_PI;
+  }else if(x1 == 0.0 && y1 > 0.0){
+    return M_PI/2.0;
+  }else if(x1 == 0.0 && y1 < 0.0){
+    return -M_PI/2.0;
+  }
+  return 0.0;
 }
 #endif
 
