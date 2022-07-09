@@ -86,7 +86,7 @@ void main(void){
 	coord.x*= pixelSize.y/pixelSize.x;
 
 	// we will only use gl_ProjectionMatrix to scale and translate, so the following should be OK.
-	PixelScale = vec2(pixelSize.y*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
+	PixelScale = vec2(pixelSize.x*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
 	viewCoord = gl_Vertex.xy;
 	viewCoord2 = (gl_ProjectionMatrix*gl_Vertex).xy;
 
@@ -203,8 +203,8 @@ void init() {}
 //out vec4 gl_FragColor;
 #group Post
 uniform float Gamma; slider[0.0,1.0,5.0]
-// 1: Linear, 2: Expontial, 3: Filmic, 4: Reinhart; 5: Syntopia
-uniform int ToneMapping; slider[1,1,5]
+// 1: Linear, 2: Expontial, 3: Filmic, 4: Reinhart; 5: Syntopia; 6: lottes 7: uchimura 8: uncharted2 9: luminance map
+uniform int ToneMapping; slider[1,1,9]
 uniform float Exposure; slider[0.0,1.0,3.0]
 uniform float Brightness; slider[0.0,1.0,5.0];
 uniform float Contrast; slider[0.0,1.0,5.0];

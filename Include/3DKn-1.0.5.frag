@@ -11,7 +11,7 @@ vec3 color(vec3 cameraPos, vec3 direction);
 */
 
 #buffer RGBA32F
-#buffershader "BufferShader-1.0.1.frag"
+#buffershader "BufferShader-1.0.2.frag"
 #camera 3D
 
 #vertex
@@ -28,8 +28,8 @@ varying vec3 Right;
 #group Camera
 // Field-of-view
 uniform float FOV; slider[0,0.4,2.0] NotLockable
-uniform vec3 Eye; slider[(-50,-50,-50),(0,0,-10),(50,50,50)] NotLockable
-uniform vec3 Target; slider[(-50,-50,-50),(0,0,0),(50,50,50)] NotLockable
+uniform vec3 Eye; slider[(-150,-150,-150),(0,0,-10),(150,150,150)] NotLockable
+uniform vec3 Target; slider[(-150,-150,-150),(0,0,0),(150,150,150)] NotLockable
 uniform vec3 Up; slider[(0,0,0),(0,1,0),(0,0,0)] NotLockable
 
 uniform vec2 pixelSize;
@@ -48,7 +48,7 @@ void main(void)
 	coord.x*= pixelSize.y/pixelSize.x;
 
 	// we will only use gl_ProjectionMatrix to scale and translate, so the following should be OK.
-	PixelScale =vec2(pixelSize.y*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
+	PixelScale =vec2(pixelSize.x*gl_ProjectionMatrix[0][0], pixelSize.y*gl_ProjectionMatrix[1][1]);
 	viewCoord = gl_Vertex.xy;
 	viewCoord2= (gl_ProjectionMatrix*gl_Vertex).xy;
 
@@ -64,7 +64,6 @@ void main(void)
 #group Camera
 uniform bool EquiRectangular; checkbox[false]
 
-#group Raytracer
 
 #define PI  3.14159265358979323846264
 
@@ -98,6 +97,7 @@ uniform int ApertureNbrSides; slider[2,7,10]
 uniform float ApertureRot; slider[0,0,360]
 //For star shaped diphragms. Very limited
 uniform bool ApStarShaped; checkbox[false]
+#group Raytracer
 
 // vec2 rand2(vec2 co){
 // #ifdef WANG_HASH
@@ -141,8 +141,8 @@ void init() {}
 
 #group Post
 uniform float Gamma; slider[0.0,1.0,5.0]
-// 1: Linear, 2: Expontial, 3: Filmic, 4: Reinhart; 5: Syntopia
-uniform int ToneMapping; slider[1,1,5]
+// 1: Linear, 2: Expontial, 3: Filmic, 4: Reinhart; 5: Syntopia; 6: lottes 7: uchimura 8: uncharted2 9: luminance map
+uniform int ToneMapping; slider[1,1,9]
 uniform float Exposure; slider[0.0,1.0,3.0]
 uniform float Brightness; slider[0.0,1.0,5.0];
 uniform float Contrast; slider[0.0,1.0,5.0];
@@ -251,7 +251,7 @@ void main() {
           rayDir = equiRectangularDirection(viewCoord2, rayDir, UpOrtho, Right);
         }
 	float rayDirLength=length(rayDir);
-	float FPO1= length( rayDir+lensOffset*( 1. - 1./FocalPlane + clamp( 1./FocalPlane-1., -InFocusAWidth, InFocusAWidth)));
+	float FPO1= length( rayDir+lensOffset*( 1. - (1./FocalPlane) + clamp( 1./(FocalPlane-1.), -InFocusAWidth, InFocusAWidth)));
 
 	//Construct the ray
 	SRay Ray = SRay(from, rayDir/rayDirLength, lensOffset, 0., 1./max(1.,FPO1), 1./FocalPlane);

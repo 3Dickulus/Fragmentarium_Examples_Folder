@@ -16,8 +16,8 @@ varying vec2 aaScale;
 
 // Use this to adjust clipping planes
 
-uniform vec2 Center; slider[(-5000,-5000),(0,0),(5000,5000)] NotLockable
-uniform float Zoom; slider[1e-5,1,10000] NotLockable
+uniform vec2 Center; slider[(-500000,-500000),(0,0),(500000,500000)] NotLockable
+uniform float Zoom; slider[1e-8,1,1000000] NotLockable
 
 uniform bool EnableTransform; checkbox[true]
 uniform float RotateAngle; slider[-360,0,360]
@@ -59,14 +59,14 @@ varying vec2 aaScale;
 
 #group Post
 uniform float Gamma; slider[0.0,2.2,5.0]
-// 1: Linear, 2: Exponential, 3: Filmic, 4: Reinhart
-uniform int ToneMapping; slider[1,1,4]
+// 1: Linear, 2: Expontial, 3: Filmic, 4: Reinhart; 5: Syntopia; 6: lottes 7: uchimura 8: uncharted2 9: luminance map
+uniform int ToneMapping; slider[1,1,9]
 uniform float Exposure; slider[0.0,1.0,30.0]
 uniform float Brightness; slider[0.0,1.0,5.0];
 uniform float Contrast; slider[0.0,1.0,5.0];
 uniform float Saturation; slider[0.0,1.0,5.0];
 
-uniform float AARange; slider[0.0,2.,15.3]
+uniform float AARange; slider[0.0,2.0,15.3]
 uniform float AAExp; slider[0.0,1,15.3]
 uniform bool GaussianAA; checkbox[true]
 

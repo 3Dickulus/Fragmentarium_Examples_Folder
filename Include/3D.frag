@@ -16,6 +16,7 @@ vec3 color(vec3 cameraPos, vec3 direction);
 #camera 3D
 
 #vertex
+
 varying vec2 viewCoord;
 varying vec2 coord;
 varying vec2 PixelScale;
@@ -100,12 +101,10 @@ void init(); // forward declare
 void init() {}
 #endif
 
-//out vec4 gl_FragColor;
-
 #group Post
 uniform float Gamma; slider[0.0,2.0,5.0];
-// 1: Linear, 2: Expontial, 3: Filmic, 4: Reinhart; 5: Syntopia
-uniform int ToneMapping; slider[1,4,5];
+// 1:Linear 2:Expontial 3:Filmic 4:Reinhart 5:Syntopia 6:Lottes 7:Uchimura 8:Uncharted2 9:3Dickulus
+uniform int ToneMapping; slider[1,4,9];
 uniform float Exposure; slider[0.0,1.0,3.0];
 uniform float Brightness; slider[0.0,1.0,5.0];
 uniform float Contrast; slider[0.0,1.0,5.0];
