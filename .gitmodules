@@ -26,3 +26,6 @@
 	path = Kashaders
 	url = https://github.com/knightyFF/Kashaders
 	branch=main
+[submodule "LoicVDB"]
+	path = LoicVDB
+	url = https://github.com/loicvdb/VDB-frags.git
