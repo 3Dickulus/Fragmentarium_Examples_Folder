@@ -27,4 +27,4 @@
 	url = https://github.com/loicvdb/VDB-frags.git
 [submodule "Claude"]
 	path = Claude
-	url = https://code.mathr.co.uk/fragm-examples.git
+	url = https://github.com/claudeha/fragm-examples.git
