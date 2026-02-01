@@ -81,10 +81,10 @@ vec3 lottes(vec3 x) {
   const vec3 midIn = vec3(0.18);
   const vec3 midOut = vec3(0.267);
 
-  const vec3 b =
+  vec3 b =
       (-pow(midIn, a) + pow(hdrMax, a) * midOut) /
       ((pow(hdrMax, a * d) - pow(midIn, a * d)) * midOut);
-  const vec3 c =
+  vec3 c =
       (pow(hdrMax, a * d) * pow(midIn, a) - pow(hdrMax, a) * pow(midIn, a * d) * midOut) /
       ((pow(hdrMax, a * d) - pow(midIn, a * d)) * midOut);
 
